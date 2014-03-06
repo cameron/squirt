@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Squirt by cameron</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Squirt</h1>
+        <p class="header">A bookmarklet for mobile (and desktop) speed reading — inspired by Spritz and Readability</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/cameron/squirt/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/cameron/squirt/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/cameron/squirt">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/cameron">cameron</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="squirt" class="anchor" href="#squirt"><span class="octicon octicon-link"></span></a>Squirt</h1>
+
+<p>A mashup of <a href="http://spritzinc.com">Spritz</a>'s ORP speed reading technique and the <a href="http://www.readability.com">Readability</a> bookmarklet.</p>
+
+<h1>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h1>
+
+<p>Create a <a>bookmarklet</a> with the following JavaScript:</p>
+
+<div class="highlight highlight-JavaScript"><pre><span class="nx">javascript</span><span class="o">:</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">squirt</span><span class="p">){</span><span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="k">new</span> <span class="nx">Event</span><span class="p">(</span><span class="s1">'squirt.again'</span><span class="p">));}</span><span class="kd">var</span> <span class="nx">s</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">);</span><span class="nx">s</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="s1">'//rawgithub.com/cameron/squirt/master/squirt.js'</span><span class="p">;</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">s</span><span class="p">)})()</span>
+</pre></div>
+
+<h3>
+<a name="how-to-install-a-bookmarklet-on-a-mobile-browser" class="anchor" href="#how-to-install-a-bookmarklet-on-a-mobile-browser"><span class="octicon octicon-link"></span></a>How to Install a Bookmarklet on a Mobile Browser</h3>
+
+<p><em>Instructions are based on iOS Chrome/Safari, but should work elsewhere.</em></p>
+
+<ul>
+<li>Open this page on your phone</li>
+<li>Copy the JavaScript above to your clipboard</li>
+<li>Bookmark the current page</li>
+<li>Open your bookmarks manager
+
+<ul>
+<li>In Chrome Mobile, bookmarks are accessible via the menu icon immediately to the right of the URL bar</li>
+<li>On Safari Mobile, bookmarks are accessible via the book icon in the bottom toolbar</li>
+</ul>
+</li>
+<li>Find the newly added bookmark, and tap edit
+
+<ul>
+<li>Chrome: top right (pencil icon)</li>
+<li>Safari: bottom left ("Edit")</li>
+</ul>
+</li>
+<li>Change the name to "Squirt"</li>
+<li>Clear the URL, and paste in the JavaScript, and save</li>
+</ul><p>That's it! In Chrome, to run the bookmarklet, tap the URL bar and clear the URL like you're going to navigate to another page. Instead, type the name of the bookmarklet, and tap it when it appears in the autocomplete list.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
