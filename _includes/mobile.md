@@ -1,10 +1,8 @@
-*Instructions are for iOS Chrome and Safari*
+*Instructions are for iOS Chrome and Safari, but should be sufficient for the enterprising Android user.*
 
 ## Open this page on your phone
 - Copy the JavaScript below to your clipboard
-<pre>
-javascript:(function(){  if(window.squirting){    window.squirted && document.dispatchEvent(new Event('squirt.again'));    return;  }  window.squirting = true;  var s = document.createElement('script');  s.src = '//www.squirt.io/squirt.js';  document.body.appendChild(s);})();
-</pre>
+<pre>javascript:(function(){  if(window.squirting){    var test;    window.squirted && document.dispatchEvent(new Event('squirt.again'));  } else {    window.squirting = true;    var s = document.createElement('script');    s.src = window.location.search.indexOf('sq-dev') != -1 ? '/squirt.js'    : '//www.squirt.io/squirt.js';    document.body.appendChild(s);  }})();</pre>
 - Bookmark the current page
 - Open your bookmarks manager
   - **Chrome**: menu icon, right of the URL bar

@@ -37,103 +37,108 @@
   })(makeRead(makeTextToNodes(wordToNode)), makeGUI);
 
   function makeRead(textToNodes) {
-    return function read(text) {
-      var nodes = textToNodes(text);
-      var lastNode = null;
-      var timeoutId;
-      var nodeIdx = 0;
-      var incrememntNodeIdx = function(increment){
-        var ret = nodeIdx;
-        nodeIdx += increment || 1;
-        nodeIdx = Math.max(0, nodeIdx);
-        prerender();
-        return ret;
+    var nodes;
+    var lastNode = null;
+    var timeoutId;
+    var nodeIdx;
+    var incrememntNodeIdx = function(increment){
+      var ret = nodeIdx;
+      nodeIdx += increment || 1;
+      nodeIdx = Math.max(0, nodeIdx);
+      prerender();
+      return ret;
+    }
+    var waitAfterComma = 2;
+    var waitAfterPeriod = 3;
+    var lastChar, delay;
+    var container;
+    var prerenderer;
+    var jumped = false;
+    var postJumpDelay = 1;
+    sq.paused = false;
+
+    on('squirt.close', function(){
+      clearTimeout(timeoutId);
+    });
+
+    var ms;
+    var wpm = function(wpm){
+      ms = 60 * 1000 / wpm ;
+    }
+    on('squirt.wpm', function(e){
+      sq.wpm = e.value
+      wpm(e.value);
+      dispatch('squirt.wpm.after');
+    });
+
+    on('squirt.pause', function(){
+      dispatch('squirt.play', {value: false});
+    });
+
+    on('squirt.play', play);
+
+    on('squirt.play.toggle', function(){
+      dispatch('squirt.play', {value: sq.paused});
+    });
+
+    dispatch('squirt.wpm', {value: 400});
+
+    on('squirt.rewind', function(e){
+      // Rewind by `e.value` seconds. Then walk back to the
+      // beginning of the sentence.
+      if(e.value == -1) nodeIdx = 0;
+      else {
+        incrememntNodeIdx(-Math.floor(e.value * 1000 / ms));
+        while(nodes[nodeIdx].word.indexOf('.') == -1 && nodeIdx != 0){
+          incrememntNodeIdx(-1);
+        }
+        nodeIdx != 0 && incrememntNodeIdx();
       }
-      var waitAfterComma = 2;
-      var waitAfterPeriod = 3;
-      var lastChar, delay;
-      var container = document.querySelector('.sq-word-center');
-      var prerenderer = makeDiv({'class': 'sq-word-prerenderer'}, container);
+      jumped = true;
+    });
+
+    function play(e){
+      sq.paused = e.value === undefined ? false : !e.value;
+      !sq.paused && nextNode();
+      dispatch('squirt.play.after');
+    };
+
+    function prerender(){
+      prerenderer.appendChild(nodes[nodeIdx]);
+      nodes[nodeIdx].center();
+    }
+
+    function nextNode() {
+      if(sq.paused) return;
+      lastNode && lastNode.remove();
+      var nextIdx = incrememntNodeIdx();
+      if(nextIdx >= nodes.length) return;
+      lastNode = nodes[nextIdx];
+      container.appendChild(lastNode);
+      delay = getDelay(lastNode, jumped);
+      jumped = false;
+      nodeIdx != nodes.length && (timeoutId = setTimeout(nextNode, ms * delay))
+    };
+
+    function getDelay(node, jumped){
+      if(jumped) return waitAfterPeriod;
+      if(lastNode.word == "Mr." ||
+          lastNode.word == "Mrs." ||
+          lastNode.word == "Ms.") return 1;
+      var lastChar = node.word[node.word.length - 1];
+      if('.!?'.indexOf(lastChar) != -1) return waitAfterPeriod;
+      if(',;:'.indexOf(lastChar) != -1) return waitAfterComma;
+      return 1;
+    };
+    return function read(text) {
+      container = document.querySelector('.sq-word-center');
+      prerenderer = prerenderer ? prerenderer
+                  : makeDiv({'class': 'sq-word-prerenderer'}, container);
       map(container.children, function(child){
         child.classList.contains('sq-word') && child.remove();
       });
-      var jumped = false;
-      var postJumpDelay = 1;
-      sq.paused = false;
-
-      on('squirt.close', function(){
-        clearTimeout(timeoutId);
-      });
-
-      var ms;
-      var wpm = function(wpm){
-        ms = 60 * 1000 / wpm ;
-      }
-      on('squirt.wpm', function(e){
-        sq.wpm = e.value
-        wpm(e.value);
-        dispatch('squirt.wpm.after');
-      });
-
-      on('squirt.pause', function(){
-        dispatch('squirt.play', {value: false});
-      });
-
-      on('squirt.play', play);
-
-      on('squirt.play.toggle', function(){
-        dispatch('squirt.play', {value: sq.paused});
-      });
-
-      dispatch('squirt.wpm', {value: 400});
-
-      on('squirt.rewind', function(e){
-        // Rewind by `e.value` seconds. Then walk back to the
-        // beginning of the sentence.
-        if(e.value == -1) nodeIdx = 0;
-        else {
-          incrememntNodeIdx(-Math.floor(e.value * 1000 / ms));
-          while(nodes[nodeIdx].word.indexOf('.') == -1 && nodeIdx != 0){
-            incrememntNodeIdx(-1);
-          }
-          nodeIdx != 0 && incrememntNodeIdx();
-        }
-        jumped = true;
-      });
-
-      function play(e){
-        sq.paused = e.value === undefined ? false : !e.value;
-        !sq.paused && nextNode();
-        dispatch('squirt.play.after');
-      };
-
-      function prerender(){
-        prerenderer.appendChild(nodes[nodeIdx]);
-        nodes[nodeIdx].center();
-      }
-
-      function nextNode() {
-        if(sq.paused) return;
-        lastNode && lastNode.remove();
-        var nextIdx = incrememntNodeIdx();
-        if(nextIdx >= nodes.length) return;
-        lastNode = nodes[nextIdx];
-        container.appendChild(lastNode);
-        delay = getDelay(lastNode, jumped);
-        jumped = false;
-        nodeIdx != nodes.length && (timeoutId = setTimeout(nextNode, ms * delay))
-      };
-
-      function getDelay(node, jumped){
-        if(jumped) return waitAfterPeriod;
-        if(lastNode.word == "Mr." ||
-            lastNode.word == "Mrs." ||
-            lastNode.word == "Ms.") return 1;
-        var lastChar = node.word[node.word.length - 1];
-        if('.!?'.indexOf(lastChar) != -1) return waitAfterPeriod;
-        if(',;:'.indexOf(lastChar) != -1) return waitAfterComma;
-        return 1;
-      };
+      nodes = textToNodes(text);
+      nodeIdx = 0;
 
       prerender();
       dispatch('squirt.play');

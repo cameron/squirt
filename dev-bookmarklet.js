@@ -1,6 +1,5 @@
-javascript:(function(){
+(function(){
   if(window.squirting){
-    var test;
     window.squirted && document.dispatchEvent(new Event('squirt.again'));
   } else {
     window.squirting = true;
