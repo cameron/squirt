@@ -3,8 +3,8 @@
     window.squirted && document.dispatchEvent(new Event('squirt.again'));
     return;
   }
-  window.squirting = null
+  window.squirting = true;
   var s = document.createElement('script');
-  s.src='//www.squirt.io/js';
-  document.body.appendChild(s)
+  s.src = '//www.squirt.io/js';
+  document.body.appendChild(s);
 })();
