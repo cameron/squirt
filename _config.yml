@@ -1,4 +1,4 @@
-markdown: redcarpet
+markdown: kramdown
 pygments: true
 
 title_tag_text: Speed read the web.

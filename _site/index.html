@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Speed reading on any website, on any device.</title>
+  <title>Speed read the web.</title>
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/syntax.css">
@@ -15,62 +15,33 @@
   <div class="container">
     <h1><a href="./">Squirt</a></h1>
     
-<p>Speed read any web page on your phone, or in your browser</p>
+<hr />
 
-<h2>Solo is useful if...</h2>
+<h2 id="speed-read-the-web">Speed read the web</h2>
 
-<ul>
-<li>You want to create an &quot;about me&quot; page from a single markdown file and host it under a custom domain name.</li>
-<li>You want to create a single-page website that&#39;s mostly text, like <a href="https://knowyourcompany.com/">Know Your Company</a>.</li>
-<li>You want to share a single markdown file and tried GitHub Gist (<a href="https://gist.github.com/dypsilon/5819504">example</a>), but would like something nicer-looking.</li>
-<li>You want something like GitHub&#39;s <a href="http://pages.github.com/">automatic page generator</a> for a non-code repository.</li>
-</ul>
+<p>Squirt is a bookmarklet: click and drag <a href="javascript:(function(){  if(window.squirting){    window.squirted &amp;&amp; document.dispatchEvent(new Event('squirt.again'));    return;  }  window.squirting = true;  var s = document.createElement('script');  s.src = '//www.squirt.io/squirt.js';  document.body.appendChild(s);})();">Squirt</a> to your browser’s bookmark bar.</p>
 
-<h2>Examples</h2>
+<p>Visit an <a href="http://zenhabits.net/">article</a>, click the bookmarklet, read speedily:</p>
 
-<ul>
-<li>This page itself is built with Solo. Try it out from <a href="https://github.com/chibicode/solo">the github repo</a>.</li>
-<li><a href="http://chibicode.com">My personal site</a> is built with Solo. It&#39;s generated from <a href="https://github.com/chibicode/chibicode.com/blob/gh-pages/_includes/index.md">this markdown file</a>.</li>
-<li>Two of my Japanese personal sites (<a href="http://j.chibicode.com/">#1</a> and <a href="http://waza.chibicode.com/">#2</a>) are also built with Solo.</li>
-</ul>
+<p><img src="/squirt3.gif" alt="In action" /></p>
 
-<h2>Usage</h2>
+<h2 id="for-mobile">For mobile</h2>
 
-<p>First, <a href="http://jekyllrb.com/docs/installation/">install Jekyll</a>. Then download Solo from its <a href="https://github.com/poole/poole">GitHub Repository</a>. Start Jekyll and you should see this page up and running.</p>
+<p>2 minutes of hassle for a <a href="/mobile.html">lifetime of efficiency</a>.</p>
 
-<p><strong>The main file you&#39;ll be editing is <code>_includes/index.md</code></strong>. This becomes the content for the main <code>index.html</code>.</p>
-
-<h3>Other Files</h3>
-
-<ul>
-<li>Edit <code>_config.yml</code> to change the site title.</li>
-<li>Edit <code>_includes/head.html</code> to add custom code to <code>&lt;head&gt;</code>.</li>
-<li>Edit <code>_includes/scripts.html</code> to add custom code before <code>&lt;/body&gt;</code>.</li>
-<li>Edit <code>CNAME</code> to host on a custom domain.</li>
-<li>Edit <code>README.md</code> before pushing your code.</li>
-</ul>
-
-<h3>Don&#39;t use <code>&lt;h1&gt;</code> tags</h3>
-
-<p>Wthin <code>index.md</code>, do not use <code>&lt;h1&gt;</code> tags - <code>&lt;h1&gt;</code> is reserved for the site title.</p>
-
-<h3>Supported Tags</h3>
-
-<p>Solo supports lists, <code>&lt;hr&gt;</code>s, <code>&lt;table&gt;</code>s,</p>
-
-<blockquote>
-<p>blockquotes, and...</p>
-</blockquote>
-<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;pre&gt;</span>code blocks with syntax highlighting.<span class="nt">&lt;/pre&gt;</span>
-</code></pre></div>
-<h3>Keep Solo up to date</h3>
-
-<p>Instead of downloading, you can <a href="https://github.com/chibicode/solo/fork">fork Solo</a> and use the &quot;upstream&quot; strategy described on <a href="https://help.github.com/articles/fork-a-repo">this page</a> to keep Solo up to date.</p>
-
-<h2>Author</h2>
+<h2 id="author">Author</h2>
 
 <p>Twitter: <a href="http://twitter.com/camron">@camron</a>,
 Github: <a href="http://github.com/cameron">@cameron</a></p>
+
+<h2 id="acknowledgements">Acknowledgements</h2>
+
+<p><a href="http://www.spritzinc.com/">Spritz Inc</a>, the company whose patents are pending.</p>
+
+<p><a href="https://www.readability.com/">Readability</a>, the company who open-sourced their innovation and made mine sustainably possible.</p>
+
+<p><a href="http://bit.ly/1fcEHQ3">The problem with software patents</a>.</p>
+
 
   </div>
 
