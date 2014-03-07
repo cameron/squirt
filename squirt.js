@@ -218,7 +218,7 @@
 
     var obscure = makeDiv({class: 'sq-obscure'}, squirt);
     on(obscure, 'click', function(){
-      window.squirted = null;
+      window.squirted = true;
       dispatch('squirt.close');
     });
 
