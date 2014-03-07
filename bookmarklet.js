@@ -5,6 +5,6 @@
   }
   window.squirting = true;
   var s = document.createElement('script');
-  s.src = '//www.squirt.io/js';
+  s.src = '//www.squirt.io/squirt.js';
   document.body.appendChild(s);
 })();
