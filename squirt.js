@@ -2,9 +2,8 @@
   var sq = {};
   (function makeSquirt(read, makeGUI) {
     var host = window.location.search.indexOf('sq-dev') != -1 ? '/' :
-      '//rawgithub.com/cameron/squirt/master/';
+      '//www.squirt.io/';
 
-    makeEl('meta', {'apple-mobile-web-app-capable': 'yes'}, document.head);
     var ss = injectStylesheet(host + 'squirt.css')
     injectStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
 
