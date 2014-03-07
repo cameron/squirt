@@ -1,4 +1,4 @@
-(function(){
+javascript:(function(){
   if(window.squirting){
     window.squirted && document.dispatchEvent(new Event('squirt.again'));
     return;
