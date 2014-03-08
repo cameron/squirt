@@ -47,59 +47,57 @@
       nodeIdx = Math.max(0, nodeIdx);
       prerender();
       return ret;
-    }
+    };
     var waitAfterComma = 2;
     var waitAfterPeriod = 3;
-    var lastChar, delay;
-    var container;
+    var wordContainer;
     var prerenderer;
-    var jumped = false;
-    var postJumpDelay = 1;
     sq.paused = false;
 
-    on('squirt.close', function(){
-      clearTimeout(timeoutId);
-    });
-
-    var ms;
+    var intervalMs;
     var wpm = function(wpm){
-      ms = 60 * 1000 / wpm ;
-    }
-    on('squirt.wpm', function(e){
-      sq.wpm = e.value
-      wpm(e.value);
-      dispatch('squirt.wpm.after');
-    });
+      intervalMs = 60 * 1000 / wpm ;
+    };
 
-    on('squirt.pause', function(){
-      dispatch('squirt.play', {value: false});
-    });
+    (function readerEventHandlers(){
+      on('squirt.close', function(){
+        clearTimeout(timeoutId);
+      });
 
-    on('squirt.play', play);
+      on('squirt.wpm', function(e){
+        sq.wpm = e.value
+        wpm(e.value);
+        dispatch('squirt.wpm.after');
+      });
 
-    on('squirt.play.toggle', function(){
-      dispatch('squirt.play', {value: sq.paused});
-    });
+      on('squirt.pause', function(){
+        dispatch('squirt.play', {value: false});
+      });
 
-    dispatch('squirt.wpm', {value: 400});
+      on('squirt.play', play);
 
-    on('squirt.rewind', function(e){
-      // Rewind by `e.value` seconds. Then walk back to the
-      // beginning of the sentence.
-      if(e.value == -1) nodeIdx = 0;
-      else {
-        incrememntNodeIdx(-Math.floor(e.value * 1000 / ms));
-        while(nodes[nodeIdx].word.indexOf('.') == -1 && nodeIdx != 0){
-          incrememntNodeIdx(-1);
+      on('squirt.play.toggle', function(){
+        dispatch('squirt.play', {value: sq.paused});
+      });
+
+      on('squirt.rewind', function(e){
+        // Rewind by `e.value` seconds. Then walk back to the
+        // beginning of the sentence.
+        if(e.value == -1) nodeIdx = 0;
+        else {
+          incrememntNodeIdx(-Math.floor(e.value * 1000 / intervalMs));
+          while(nodes[nodeIdx].word.indexOf('.') == -1 && nodeIdx != 0){
+            incrememntNodeIdx(-1);
+          }
+          nodeIdx != 0 && incrememntNodeIdx();
         }
-        nodeIdx != 0 && incrememntNodeIdx();
-      }
-      jumped = true;
-    });
+        jumped = true;
+      });
+    })();
 
     function play(e){
       sq.paused = e.value === undefined ? false : !e.value;
-      !sq.paused && nextNode();
+      !sq.paused ? nextNode() : clearTimeout(timeoutId);
       dispatch('squirt.play.after');
     };
 
@@ -108,16 +106,18 @@
       nodes[nodeIdx].center();
     }
 
+    var delay, jumped, nextIdx;
     function nextNode() {
-      if(sq.paused) return;
       lastNode && lastNode.remove();
-      var nextIdx = incrememntNodeIdx();
+
+      nextIdx = incrememntNodeIdx();
       if(nextIdx >= nodes.length) return;
+
       lastNode = nodes[nextIdx];
-      container.appendChild(lastNode);
+      wordContainer.appendChild(lastNode);
       delay = getDelay(lastNode, jumped);
       jumped = false;
-      nodeIdx != nodes.length && (timeoutId = setTimeout(nextNode, ms * delay))
+      nodeIdx != nodes.length && (timeoutId = setTimeout(nextNode, intervalMs * delay))
     };
 
     function getDelay(node, jumped){
@@ -130,12 +130,14 @@
       if(',;:'.indexOf(lastChar) != -1) return waitAfterComma;
       return 1;
     };
+
+    dispatch('squirt.wpm', {value: 400});
     return function read(text) {
-      container = document.querySelector('.sq-word-center');
+      wordContainer = document.querySelector('.sq-word-container');
       prerenderer = prerenderer ? prerenderer
-                  : makeDiv({'class': 'sq-word-prerenderer'}, container);
-      map(container.children, function(child){
-        child.classList.contains('sq-word') && child.remove();
+                  : makeDiv({'class': 'sq-word-prerenderer'}, wordContainer);
+      map(wordContainer.querySelectorAll('.sq-word'), function(wordNode){
+        wordNode.remove();
       });
       nodes = textToNodes(text);
       nodeIdx = 0;
@@ -227,11 +229,11 @@
       dispatch('squirt.close');
     });
 
-    var squirtWin = makeDiv({'class': 'sq-modal'}, squirt);
-    var port = makeDiv({'class': 'sq-word-port'}, squirtWin);
-    var container = makeDiv({'class': 'sq-word-center'}, port);
-    var indicator = makeDiv({'class': 'sq-focus-indicator'}, container);
-    var controls = makeDiv({'class':'sq-controls'}, squirtWin);
+    var modal = makeDiv({'class': 'sq-modal'}, squirt);
+    var controls = makeDiv({'class':'sq-controls'}, modal);
+    var reader = makeDiv({'class': 'sq-reader'}, modal);
+    var wordContainer = makeDiv({'class': 'sq-word-container'}, reader);
+    makeDiv({'class': 'sq-focus-indicator-gap'}, wordContainer);
 
     (function make(controls){
 
@@ -241,7 +243,7 @@
         // create the ever-present left-hand side button
         var control = makeDiv({'class': 'sq-wpm sq-control'}, controls);
         var wpmLink = makeEl('a', {}, control);
-        bind("=wpm WPM", sq, wpmLink);
+        bind("{{wpm}} WPM", sq, wpmLink);
         on('squirt.wpm.after', wpmLink.render);
         on(control, 'click', function(){
           toggle(wpmSelector) ?
@@ -260,7 +262,7 @@
           a.data = { baseWPM: wpm };
           a.data.__proto__ = plus50OptData;
           datas.push(a.data);
-          bind("=wpm",  a.data, a);
+          bind("{{wpm}}",  a.data, a);
           on(opt, 'click', function(e){
             dispatch('squirt.wpm', {value: e.target.firstChild.data.wpm});
             dispatch('squirt.play');
@@ -269,9 +271,9 @@
         };
 
         // create the last option for the custom selector
-        var plus50Opt = makeDiv({'class': 'sq-wpm-option sq-plus-50'}, wpmSelector);
+        var plus50Opt = makeDiv({'class': 'sq-wpm-option sq-wpm-plus-50'}, wpmSelector);
         var a = makeEl('a', {}, plus50Opt);
-        bind("=sign 50", plus50OptData, a);
+        bind("{{sign}}50", plus50OptData, a);
         on(plus50Opt, 'click', function(){
           datas.map(function(data){
             data.wpm = data.baseWPM + data.add;
@@ -339,8 +341,8 @@
 
   function render(expr, data, el){
     var match, rendered = expr;
-    expr.match(/=[^ =]+/g).map(function(match){
-      var val = data[match.substr(1)];
+    expr.match(/{{[^}]+}}/g).map(function(match){
+      var val = data[match.substr(2, match.length - 4)];
       rendered = rendered.replace(match, val == undefined ? '' : val);
     });
     el.textContent = rendered;

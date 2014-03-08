@@ -31,34 +31,29 @@
   background-color: #F6F6F6;
   color: #333;
 
-  border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0,0,0,.4);
   z-index: 99999999999999999999999;
   font-family: Georgia, serif;
 }
 
-.sq-word-port {
-    width: 80%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.sq-word-center {
+.sq-reader {
   position: absolute;
-  left: 35%;
-  top: 34%;
-  height: 100%
-}
-
-.sq-focus-indicator {
+  height: 100%;
+  left: 34%;
   border-left: 1px solid rgba(0,0,0, .4);
+}
+
+.sq-word-container {
   position: absolute;
-  width: 1px;
-  display: block;
-  height: 64%;
-  top: -20%;
-  border-color: rgba(0,0,0, .2);
+  top: 30%;
+}
+
+.sq-focus-indicator-gap {
+  position: absolute;
+  height: 111px;
+  background-color: #f6f6f6;
+  width: 2px;
+  left: -2px;
 }
 
 .sq-controls {
@@ -72,6 +67,7 @@
   height: 100%;
   width: 20%;
   top: 0;
+  z-index: 1;
 }
 
 .sq-control {
@@ -109,11 +105,15 @@
 .sq-wpm-option {
   margin: 0 3px 3px 0;
   width: 32.75%; 
-  height: 74px;
-  padding-top: 54px;
+  height: 80px;
+  padding-top: 51px;
   float: left;
   background-color: rgba(255, 255, 255, 1);
   cursor: pointer;
+}
+
+.sq-wpm-plus-50 {
+  color: rgba(0, 155, 216, 0.39);
 }
 
 .sq-wpm-option:hover, .sq-wpm-option:active {
@@ -134,9 +134,9 @@
 }
 
 .sq-word{
+  top: 34%;
   position: absolute;
   font-size: 1.2em;
-  background-color: #F6F6F6;
   padding: 15px;
 }
 
@@ -151,27 +151,38 @@ and (min-device-width : 320px)
 and (max-device-width : 568px) 
 and (orientation: landscape){
  .sq-modal {
-   border-radius: 0;
    width: 100%;
-   height: 80%;
+   height: 204px;
    top: 20%;
-   left: 0;
  } 
 
- .sq-focus-indicator {
-   height: 84%;
-   top: -26%;
+ .sq-focus-indicator-gap {
+   height: 66px;
  }
 
  .sq-control {
-   height: 44px;
-   padding-top: 20px;
+   height: 32.3%;
+   padding-top: 0;
+   margin-bottom: 2.1%;
    font-size: .9em;
  }
 
+ .sq-control a {
+   padding-top: 20%;
+ }
+
  .sq-wpm-option {
-   height: 47px;
-   padding-top: 17px;
+   height: 32.3%;
+   margin: 0 0.5% 0.5% 0;
+   padding-top: 0;
+ }
+
+ .sq-wpm-option a {
+   padding-top: 13%;
+ }
+
+ .sq-word {
+   font-size: .6em;
  }
 }
 
@@ -180,20 +191,17 @@ and (min-device-width : 320px)
 and (max-device-width : 568px) 
 and (orientation: portrait){
  .sq-modal {
-   width: 100%;
-   height: 80%;
+   height: 404px;
    top: 20%;
-   left: 0;
  } 
 
- .sq-word-center {
-   left: 47%;
-   top: 16%;
+ .sq-reader {
+   height: 44%;
+   left: 45%;
  }
 
- .sq-focus-indicator {
-   top: -11%;
-   height: 35%;
+ .sq-focus-indicator-gap {
+   height: 74px;
  }
 
  .sq-wpm-selector {
@@ -220,12 +228,12 @@ and (orientation: portrait){
  }
 
  .sq-wpm-option {
-   height: 84px;
+   height: 82px;
    padding-top: 50px;
    width: 32.67%;
  }
 
  .sq-word {
-   font-size: .7em;
+   font-size: .6em;
  }
 }
