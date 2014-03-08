@@ -4,7 +4,10 @@ javascript:(function(){
   } else {
     window.squirting = true;
     var s = document.createElement('script');
-    s.src = (window.location.search.indexOf('sq-dev') != -1) && '/squirt.js' || '//www.squirt.io/squirt.js';
+    s.src = '//www.squirt.io/squirt.js';
+    if(window.location.search.indexOf('sq-dev') != -1){
+      s.src = '/squirt.js';
+    }
     document.body.appendChild(s);
   }
 })();

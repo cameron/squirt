@@ -2,7 +2,7 @@
 
 ## Speed read the web
 
-Squirt is a bookmarklet: click and drag <a href="javascript:(function(){  if(window.squirting){    window.squirted && document.dispatchEvent(new Event('squirt.again'));  } else {    window.squirting = true;    var s = document.createElement('script');    s.src = (window.location.search.indexOf('sq-dev') != -1) && '/squirt.js' || '//www.squirt.io/squirt.js';    document.body.appendChild(s);  }})();">Squirt</a> to your browser's bookmark bar.
+Squirt is a bookmarklet: click and drag <a href="javascript:(function(){  if(window.squirting){    window.squirted && document.dispatchEvent(new Event('squirt.again'));  } else {    window.squirting = true;    var s = document.createElement('script');    s.src = '//www.squirt.io/squirt.js';    if(window.location.search.indexOf('sq-dev') != -1){      s.src = '/squirt.js';    }    document.body.appendChild(s);  }})();">Squirt</a> to your browser's bookmark bar.
 
 Visit an [article](http://zenhabits.net/), click the bookmarklet, read speedily:
 
