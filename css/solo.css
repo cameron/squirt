@@ -5,7 +5,7 @@ html {
   font: 16px/1.5 Inconsolata, sans-serif;
 }
 
-@media (min-width: 30rem) {
+@media (min-width: 32rem) {
   html {
     font-size: 20px;
   }
@@ -16,7 +16,7 @@ body {
   color: #333;
 }
 
-@media (min-width: 30rem) {
+@media (min-width: 32rem) {
   body {
     margin-top: 5rem;
   }
@@ -44,7 +44,7 @@ h1 {
   margin-bottom: 1rem;
 }
 
-@media (min-width: 30rem) {
+@media (min-width: 32rem) {
   h1 {
     font-size: 3rem;
     margin-bottom: 3rem;
@@ -61,7 +61,7 @@ h2 {
   margin-bottom: 0.75rem;
 }
 
-@media (min-width: 30rem) {
+@media (min-width: 32rem) {
   h2 {
     margin-top: 2.5rem;
     font-size: 1.5rem;
@@ -142,7 +142,7 @@ code {
 }
 
 .container {
-  max-width: 30rem;
+  max-width: 32rem;
   margin: 0 auto;
   padding: 0 1rem;
 }
