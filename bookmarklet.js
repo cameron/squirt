@@ -1,6 +1,6 @@
 (function(){
   if(window.squirting){
-    window.squirted && document.dispatchEvent(new Event('squirt.again'));
+    window.squirted && document.dispatchEvent(document.createEvent('squirt.again'));
   } else {
     window.squirting = true;
     window.squirtUserId = '--squirtUser--';
