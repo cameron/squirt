@@ -1,0 +1,8 @@
+#! /bin/bash
+
+set -e
+
+BM="javascript:$(cat bookmarklet.js | tr -d '\n ' | sed -e 's/[\/&]/\\&/g')"
+sed -i.bak "s/<pre>.*<\/pre>/<pre>$BM<\/pre>/" _includes/mobile.md
+sed -i.bak "s/<a href=\".*\">link's URL<\/a>/<a href=\"$BM\">link's URL<\/a>/" _includes/mobile.md
+sed -i.bu "s/<a href=\".*\">Squirt<\/a>/<a href=\"$BM\">Squirt<\/a>/" _includes/index.md

@@ -1,5 +1,5 @@
 ---
-Squirt is a bookmarklet: click and drag <a href="javascript:(function(){  if(window.squirting){    window.squirted && document.dispatchEvent(new Event('squirt.again'));  } else {    window.squirting = true;    var s = document.createElement('script');    s.src = '//www.squirt.io/squirt.js';    if(window.location.search.indexOf('sq-dev') != -1){      s.src = '//localhost:4000/squirt.js';    }    document.body.appendChild(s);  }})();">Squirt</a> to your browser's bookmark bar. ([Instructions for mobile.](/mobile.html))
+Squirt is a bookmarklet: click and drag <a href="javascript:(function(){if(window.squirting){window.squirted&&document.dispatchEvent(newEvent('squirt.again'));}else{window.squirting=true;s=document.createElement('script');s.src='//www.squirt.io/squirt.js';if(window.location.search.indexOf('sq-dev')!=-1){s.src='//localhost:4000/squirt.js';}document.body.appendChild(s);}})();">Squirt</a> to your browser's bookmark bar. ([Instructions for mobile.](/mobile.html))
 
 Visit an [article](http://zenhabits.net/), click the bookmarklet, read speedily:
 
