@@ -11,11 +11,11 @@ You can also try selecting text before clicking the bookmarklet to speed read pa
 
 Trade one minute of hassle for a [lifetime of efficiency](/mobile.html).
 
-## Author
+## Made by Cameron Boehmer
 
 - Twitter: [@camron](http://twitter.com/camron)
 - Github: [@cameron](http://github.com/cameron)
-- Blog: [Siliconfidential](http://www.siliconfidential.com)
+- Blog: [siliconfidential.com](http://www.siliconfidential.com)
 - Employed @ [Hack Reactor](http://www.hackreactor.com)
 
 ## Acknowledgements
@@ -25,3 +25,5 @@ Trade one minute of hassle for a [lifetime of efficiency](/mobile.html).
 [Readability](https://www.readability.com/), the company who open-sourced their innovation and made mine sustainably possible.
 
 [The problem with software patents](http://bit.ly/1fcEHQ3).
+
+[Michael McKellar](https://www.behance.net/michaelmckellar) for a brilliant logo concept.
