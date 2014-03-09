@@ -2,7 +2,7 @@
 
 ## Open this page on your phone
 - Select and copy the JavaScript below to your clipboard:
-<pre>javascript:(function(){  if(window.squirting){    window.squirted && document.dispatchEvent(new Event('squirt.again'));  } else {    window.squirting = true;    var s = document.createElement('script');    s.src = '//www.squirt.io/squirt.js';    if(window.location.search.indexOf('sq-dev') != -1){      s.src = '/squirt.js';    }    document.body.appendChild(s);  }})();</pre>
+<pre>javascript:(function(){  if(window.squirting){    window.squirted && document.dispatchEvent(new Event('squirt.again'));  } else {    window.squirting = true;    var s = document.createElement('script');    s.src = '//www.squirt.io/squirt.js';    if(window.location.search.indexOf('sq-dev') != -1){      s.src = '//localhost:4000/squirt.js';    }    document.body.appendChild(s);  }})();</pre>
 - Bookmark the current page
 - Open your bookmarks manager
   - **Chrome**: menu icon, right of the URL bar

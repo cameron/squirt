@@ -6,7 +6,7 @@ javascript:(function(){
     var s = document.createElement('script');
     s.src = '//www.squirt.io/squirt.js';
     if(window.location.search.indexOf('sq-dev') != -1){
-      s.src = '/squirt.js';
+      s.src = '//localhost:4000/squirt.js';
     }
     document.body.appendChild(s);
   }

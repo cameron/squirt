@@ -481,6 +481,28 @@ var readability = {
     return articleContent;
   },
 
+  // with line breaks between paragraphs, and all the nice things
+  grabArticleText: function extract(node){
+    node = node || readability.grabArticle();
+    var child, nodeName, text = '';
+    for(var childIdx = 0; childIdx < node.childNodes.length; childIdx++){
+      child = node.childNodes[childIdx];
+      if(child.nodeName == undefined) debugger;
+      nodeName = child.nodeName.toLowerCase();
+      if(nodeName == "#text"){
+        text += child.nodeValue
+      } else {
+        text += extract(child);
+      }
+    };
+    nodeName = node.nodeName.toLowerCase();
+    if('pdiv'.indexOf(nodeName) != -1){
+      if(text[text.length - 1] != '\n') text += '\n'
+      text += ' ';
+    }
+    return text;
+  },
+
   /**
    * Get the number of times a string s appears in the node e.
    *
