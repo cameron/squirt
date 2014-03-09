@@ -156,6 +156,10 @@ code {
   margin-bottom: 40px;
 }
 
+pre.bookmarklet {
+  word-wrap: break-word;
+}
+
 @media (min-width: 32rem) {
   .header img {
       margin-bottom: 57px;

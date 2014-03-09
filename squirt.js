@@ -1,6 +1,5 @@
 var sq = {};
 sq.version = '0.0.1';
-sq.userId = 'cameron-dev';
 (function(Keen){
   Keen.addEvent('load');
   (function makeSquirt(read, makeGUI) {
@@ -410,10 +409,11 @@ sq.userId = 'cameron-dev';
 
   Keen.setGlobalProperties(function(){
     var props = {
-      userId: sq.userId,
+      source: "bookmarklet",
+      userId: window.squirtUserId || 'beta-user',
       href: window.location.href,
       rawUserAgent: "${keen.user_agent}",
-      sessionId: guid(),
+      sessionId: 'sq-sesh-' + guid(),
       ip: "${keen.ip}",
       keen: { addons: [] },
       referrer: document.referrer,
