@@ -4,8 +4,8 @@ sq.userId = 'cameron-dev';
 (function(Keen){
   Keen.addEvent('load');
   (function makeSquirt(read, makeGUI) {
-    var host = window.location.search.indexOf('sq-dev') != -1 ? '/' :
-      '//www.squirt.io/';
+    var host = window.location.search.indexOf('sq-dev') != -1 ?
+      '//localhost:4000/' : '//www.squirt.io/';
 
     var ss = injectStylesheet(host + 'squirt.css')
     injectStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
@@ -163,7 +163,7 @@ sq.userId = 'cameron-dev';
 
   function makeTextToNodes(wordToNode) {
     return function textToNodes(text) {
-      text = "3 2 1 " + text.trim('\n');
+      text = "3\n 2\n 1\n " + text.trim('\n');
       return text
              .split(' ')
              .filter(function(word){ return word.length; })
