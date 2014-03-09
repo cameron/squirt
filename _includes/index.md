@@ -27,3 +27,5 @@ Trade one minute of hassle for a [lifetime of efficiency](/mobile.html).
 [The problem with software patents](http://bit.ly/1fcEHQ3).
 
 [Michael McKellar](https://www.behance.net/michaelmckellar) for a brilliant logo concept.
+
+[Shu Uesugi](http://chibicode.com/) for his Jekyll theme, [Solo](http://chibicode.github.io/solo).
