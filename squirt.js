@@ -152,7 +152,6 @@ sq.version = '0.0.1';
       prerenderer = prerenderer ? prerenderer
                   : makeDiv({'class': 'sq-word-prerenderer'}, wordContainer);
       nodes = textToNodes(text);
-      debugger;
       nodeIdx = 0;
 
       prerender();
