@@ -17,7 +17,7 @@
 
 Let's run it!
 
-- Visit the page you want to read
+- Visit [the page](http://zenhabits.net/) you want to read
 - Run the bookmarklet
   - **Chrome**
     * Tap the URL bar
