@@ -159,7 +159,6 @@ sq.host =  window.location.search.match('sq-dev') ?
     var waitAfterParagraph = 3.5;
     function getDelay(node, jumped){
       var word = node.word;
-      if(word.indexOf('it.') != -1) debugger;
       if(jumped) return waitAfterPeriod;
       var lastChar = word[word.length - 1];
       if(lastChar == '\n') return waitAfterParagraph;
@@ -516,6 +515,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     projectId: "531aa8c136bf5a0f8e000003",
     writeKey: "a863509cd0ba1c7039d54e977520462be277d525f29e98798ae4742b963b22ede0234c467494a263bd6d6b064413c29cd984e90e6e6a4468d36fed1b04bcfce6f19f50853e37b45cb283b4d0dfc4c6e7a9a23148b1696d7ea2624f1c907abfac23a67bbbead623522552de3fedced628"
   };
+
   Keen.configure(sq.host.match('squirt.io') ? prod : dev);
 
   function addon(name, input, output){

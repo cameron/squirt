@@ -29,9 +29,9 @@
 
 
     window.squirtText = "#SQ;wpm=200;SQ#Squirt displays one word at a time, positioning " +
-      "them so that your eye can read them without moving.\n " +
+      "them so that your eye can read them without moving. " +
       "Right now, you're reading at 200 words per minute. Let's go a little faster, " +
-      "shall we?\n " +
+      "shall we? " +
       "#SQ;wpm=300;SQ#This is 300 words per minute. Average reading speed is between " +
       "120 and 200 " +
       "words per minute. " +
