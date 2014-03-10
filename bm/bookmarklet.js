@@ -1,10 +1,9 @@
 (function(){
-  console.log('clicked!');
-  if(window.squirting){
-    window.squirted && document.dispatchEvent(new Event('squirt.again'));
+  if(window.sq){
+    window.sq.closed && document.dispatchEvent(new Event('squirt.again'));
   } else {
-    window.squirting = true;
-    window.squirtUserId = '--squirtUser--';
+    window.sq = {};
+    window.sq.userId = '--squirtUser--';
     s = document.createElement('script');
     s.src = '//www.squirt.io/bm/squirt.js';
     s.search = window.location.search;

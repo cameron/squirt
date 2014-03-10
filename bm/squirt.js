@@ -1,4 +1,4 @@
-var sq = {};
+var sq = window.sq;
 sq.version = '0.0.1';
 sq.host =  window.location.search.match('sq-dev') ?
   document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
@@ -309,7 +309,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     on('squirt.close', hideGUI);
     var obscure = makeDiv({class: 'sq-obscure'}, squirt);
     on(obscure, 'click', function(){
-      window.squirted = true;
+      sq.closed = true;
       dispatch('squirt.close');
       Keen.addEvent('close');
     });
@@ -532,7 +532,7 @@ sq.host =  window.location.search.match('sq-dev') ?
   Keen.setGlobalProperties(function(){
     var props = {
       source: "bookmarklet",
-      userId: window.squirtUserId || 'beta-user',
+      userId: sq.userId || 'beta-user',
       href: window.location.href,
       rawUserAgent: "${keen.user_agent}",
       sessionId: 'sq-sesh-' + guid(),
