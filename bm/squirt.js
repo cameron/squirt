@@ -1,7 +1,8 @@
 var sq = {};
 sq.version = '0.0.1';
-sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
-  '//localhost:4000/bm/' : '//www.squirt.io/bm/';
+sq.host =  window.location.search.match('sq-dev') ?
+  document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
+        : '//www.squirt.io/bm/';
 
 (function(Keen){
   Keen.addEvent('load');
@@ -51,32 +52,28 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
   })(makeRead(makeTextToNodes(wordToNode)), makeGUI);
 
   function makeRead(textToNodes) {
-    var nodes;
-    var lastNode = null;
-    var timeoutId;
-    var nodeIdx;
-    var incrememntNodeIdx = function(increment){
+    sq.paused = false;
+    var nodeIdx,
+        nodes,
+        lastNode,
+        nextNodeTimeoutId;
+
+    function incrememntNodeIdx(increment){
       var ret = nodeIdx;
       nodeIdx += increment || 1;
       nodeIdx = Math.max(0, nodeIdx);
       prerender();
       return ret;
     };
-    var waitAfterComma = 2;
-    var waitAfterPeriod = 3;
-    var waitAfterParagraph = 3.5;
-    var wordContainer;
-    var prerenderer;
-    sq.paused = false;
 
     var intervalMs;
-    var wpm = function(wpm){
+    function wpm(wpm){
       intervalMs = 60 * 1000 / wpm ;
     };
 
     (function readerEventHandlers(){
       on('squirt.close', function(){
-        clearTimeout(timeoutId);
+        clearTimeout(nextNodeTimeoutId);
         Keen.addEvent('close');
       });
 
@@ -97,9 +94,9 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
       on('squirt.rewind', function(e){
         // Rewind by `e.value` seconds. Then walk back to the
         // beginning of the sentence.
-        clearTimeout(timeoutId);
+        !sq.paused && clearTimeout(nextNodeTimeoutId);
         incrememntNodeIdx(-Math.floor(e.seconds * 1000 / intervalMs));
-        while(nodes[nodeIdx].word.indexOf('.') == -1 && nodeIdx < 0){
+        while(!nodes[nodeIdx].word.match(/\./) && nodeIdx < 0){
           incrememntNodeIdx(-1);
         }
         nextNode(true);
@@ -110,15 +107,15 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
     function pause(){
       sq.paused = true;
       dispatch('squirt.pause.after');
-      clearTimeout(timeoutId);
+      clearTimeout(nextNodeTimeoutId);
       Keen.addEvent('pause');
     };
 
     function play(e){
       sq.paused = false;
       dispatch('squirt.pause.after');
-      nextNode()
-      Keen.addEvent('play');
+      nextNode(e.jumped);
+      e.notForKeen === undefined && Keen.addEvent('play');
     };
 
     var toRender;
@@ -129,45 +126,91 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
       nodes[nodeIdx].center();
     }
 
+    function finalWord(){
+      Keen.addEvent('final-word');
+      toggle(document.querySelector('.sq-reader'));
+      if(true || window.location.hostname.match('squirt.io')){
+        window.location.href = '/install.html';
+      } else {
+        showTweetButton(nodes.length,
+          (nodes.length * intervalMs / 1000 / 60).toFixed(1));
+      }
+      toggle(finalWordContainer);
+      return;
+    };
+
     var delay, jumped, nextIdx;
     function nextNode(jumped) {
       lastNode && lastNode.remove();
 
       nextIdx = incrememntNodeIdx();
-      if(nextIdx >= nodes.length) { Keen.addEvent('final-word'); return; }
+      if(nextIdx >= nodes.length) return finalWord();
 
       lastNode = nodes[nextIdx];
       wordContainer.appendChild(lastNode);
-      lastNode.instructions && lastNode.instructions.map(function(f){ f(); });
-      timeoutId = setTimeout(nextNode, intervalMs * getDelay(lastNode, jumped));
+      lastNode.instructions && invoke(lastNode.instructions);
+      if(sq.paused) return;
+      nextNodeTimeoutId = setTimeout(nextNode, intervalMs * getDelay(lastNode, jumped));
     };
 
+    var waitAfterShortWord = 1.2;
+    var waitAfterComma = 2;
+    var waitAfterPeriod = 3;
+    var waitAfterParagraph = 3.5;
     function getDelay(node, jumped){
+      var word = node.word;
+      if(word.indexOf('it.') != -1) debugger;
       if(jumped) return waitAfterPeriod;
-      var lastChar = node.word[node.word.length - 1];
+      var lastChar = word[word.length - 1];
       if(lastChar == '\n') return waitAfterParagraph;
-      if(lastNode.word == "Mr." ||
-          lastNode.word == "Mrs." ||
-          lastNode.word == "Ms.") return 1;
       if('.!?'.indexOf(lastChar) != -1) return waitAfterPeriod;
       if(',;:'.indexOf(lastChar) != -1) return waitAfterComma;
-
+      if(word.length < 4) return waitAfterShortWord;
       return 1;
     };
 
-    dispatch('squirt.wpm', {value: 400, notForKeen: true});
-    return function read(text) {
-      wordContainer = document.querySelector('.sq-word-container');
-      map(wordContainer.querySelectorAll('.sq-word'), function(wordNode){
-        wordNode.remove();
-      });
-      prerenderer = prerenderer ? prerenderer
-                  : makeDiv({'class': 'sq-word-prerenderer'}, wordContainer);
-      if(!text){
+    function showTweetButton(words, minutes){
+      var html = "<h2>You just read " + words + " words in " + minutes + " minutes!</h2>";
+      var tweetString = "I read " + words + " words in " + minutes + " minutes without breaking a sweat&mdash;www.squirt.io turns your browser/phone into a speed reading machine!";
+      var paramStr = encodeURI("url=squirt.io&user=squirtio&size=large&text=" +
+          tweetString);
+      html += '<iframe class=\"tweet-button\" '
+               + 'allowtransparency=\"true\" frameborder=\"0\"'
+               + ' scrolling=\"no\"'
+               + ' src=\"https://platform.twitter.com/widgets/tweet_button.html?'
+               + paramStr + '\"'
+               + ' style=\"width:120px; height:20px;\"></iframe>';
+      finalWordContainer.innerHTML = html;
+    };
+
+    function showInstallLink(){
+      finalWordContainer.innerHTML = "<a class='install' href='/install.html'>Install Squirt</a>";
+    };
+
+    function readabilityFail(){
         Keen.addEvent('readability-fail');
         var modal = document.querySelector('.sq-modal');
         modal.innerHTML = '<div class="error">Oops! This page is too hard for Squirt to read. We\'ve been notified, and will do our best to resolve the issue shortly.</div>';
-      }
+    };
+
+    dispatch('squirt.wpm', {value: 400, notForKeen: true});
+
+    var wordContainer,
+        prerenderer,
+        finalWordContainer;
+    function initDomRefs(){
+      wordContainer = document.querySelector('.sq-word-container');
+      invoke(wordContainer.querySelectorAll('.sq-word'), 'remove');
+      prerenderer = document.querySelector('.sq-word-prerenderer');
+      finalWordContainer = document.querySelector('.sq-final-word');
+      document.querySelector('.sq-reader').style.display = 'block';
+      document.querySelector('.sq-final-word').style.display = 'none';
+    };
+
+    return function read(text) {
+      initDomRefs();
+      if(!text) return readabilityFail();
+
       nodes = textToNodes(text);
       nodeIdx = 0;
 
@@ -186,12 +229,8 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
     };
   };
 
-  function wordToNode(word) {
-    var node = makeDiv({'class': 'sq-word'});
-    var span;
-
-    // parse #SQ..SQ# instructions for this word
-    var instructionsRE = /#SQ(.*)SQ#/;
+  var instructionsRE = /#SQ(.*)SQ#/;
+  function parseSQInstructionsForWord(word, node){
     var match = word.match(instructionsRE);
     if(match && match.length > 1){
       node.instructions = [];
@@ -203,31 +242,42 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
           dispatch('squirt.wpm', {value: val, notForKeen: true})
         });
       });
-      word = word.replace(instructionsRE, '');
+      return word.replace(instructionsRE, '');
     };
+    return word;
+  };
 
+  function getORPIndex(word){
     var length = word.length;
     var lastChar = word[word.length - 1];
-    if('.?!:;"'.indexOf(lastChar)) length -= 1;
-    var centerOnCharIdx =
-      word.length == 1 ? 0 :
-      (word.length == 2 ? 1 :
-          (word.length == 3 ? 1 :
-              Math.floor(word.length / 2) - 1));
+    if(lastChar == '\n'){
+      lastChar = word[word.length - 2];
+      length--;
+    }
+    if('.?!:;"'.indexOf(lastChar) != -1) length--;
+    return length == 1 ? 0 :
+      (length == 2 ? 1 :
+          (length == 3 ? 1 :
+              Math.floor(length / 2) - 1));
+  };
 
-    word.split('').map(function(char, idx) {
-      span = makeEl('span', {}, node);
+  function wordToNode(word) {
+    var node = makeDiv({'class': 'sq-word'});
+    node.word = parseSQInstructionsForWord(word, node);
+
+    var orpIdx = getORPIndex(node.word);
+
+    node.word.split('').map(function charToNode(char, idx) {
+      var span = makeEl('span', {}, node);
       span.textContent = char;
-      if(idx == centerOnCharIdx) span.classList.add('sq-orp');
+      if(idx == orpIdx) span.classList.add('sq-orp');
     });
 
-    var centerOnSpan = node.children[centerOnCharIdx];
-    if(!centerOnSpan) debugger;
-    node.center = function() {
-      var val = centerOnSpan.offsetLeft + (centerOnSpan.offsetWidth / 2);
+    node.center = (function(orpNode) {
+      var val = orpNode.offsetLeft + (orpNode.offsetWidth / 2);
       node.style.left = "-" + val + "px";
-    }
-    node.word = word;
+    }).bind(null, node.children[orpIdx]);
+
     return node;
   };
 
@@ -270,10 +320,14 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
     });
 
     var modal = makeDiv({'class': 'sq-modal'}, squirt);
+
     var controls = makeDiv({'class':'sq-controls'}, modal);
     var reader = makeDiv({'class': 'sq-reader'}, modal);
     var wordContainer = makeDiv({'class': 'sq-word-container'}, reader);
     makeDiv({'class': 'sq-focus-indicator-gap'}, wordContainer);
+    makeDiv({'class': 'sq-word-prerenderer'}, wordContainer);
+    makeDiv({'class': 'sq-final-word'}, modal);
+
 
     (function make(controls){
 
@@ -362,6 +416,24 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
     return Array.prototype.map.call(listLike, f);
   }
 
+  // invoke([f1, f2]); // calls f1() and f2()
+  // invoke([o1, o2], 'func'); // calls o1.func(), o2.func()
+  // args are applied to both invocation patterns
+  function invoke(objs, funcName, args){
+    args = args || [];
+    var objsAreFuncs = false;
+    switch(typeof funcName){
+      case "object":
+      args = funcName;
+      break;
+      case "undefined":
+      objsAreFuncs = true;
+    };
+    return map(objs, function(o){
+      return objsAreFuncs ? o.apply(null, args) : o[funcName].apply(null, args);
+    });
+  }
+
   function makeEl(type, attrs, parent) {
     var el = document.createElement(type);
     for(var k in attrs){
@@ -428,17 +500,23 @@ sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
   };
 
   function toggle(el){
-    var s = el.style;
-    return (s.display = s.display == 'none' ? 'block' : 'none') == 'block';
+    var s = window.getComputedStyle(el);
+    return (el.style.display = s.display == 'none' ? 'block' : 'none') == 'block';
   }
+
 })((function injectKeen(){
   window.Keen=window.Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.0-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
 
   var Keen = window.Keen;
-  Keen.configure({
+  var prod = {
+      projectId: "531d7ffd36bf5a1ec4000000",
+      writeKey: "9bdde746be9a9c7bca138171c98d6b7a4b4ce7f9c12dc62f0c3404ea8c7b5415a879151825b668a5682e0862374edaf46f7d6f25772f2fa6bc29aeef02310e8c376e89beffe7e3a4c5227a3aa7a40d8ce1dcde7cf28c7071b2b0e3c12f06b513c5f92fa5a9cfbc1bebaddaa7c595734d"
+  };
+  var dev = {
     projectId: "531aa8c136bf5a0f8e000003",
     writeKey: "a863509cd0ba1c7039d54e977520462be277d525f29e98798ae4742b963b22ede0234c467494a263bd6d6b064413c29cd984e90e6e6a4468d36fed1b04bcfce6f19f50853e37b45cb283b4d0dfc4c6e7a9a23148b1696d7ea2624f1c907abfac23a67bbbead623522552de3fedced628"
-  });
+  };
+  Keen.configure(sq.host.match('squirt.io') ? prod : dev);
 
   function addon(name, input, output){
     return { name: name, input: input, output: output};

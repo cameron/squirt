@@ -8,7 +8,7 @@
 
 .big-link {
   text-align: center;
-  font-size: 3em;
+  font-size: 2em;
   border-radius: 2em;
   background-color: #2FA1EE;
   color: white;
@@ -31,7 +31,7 @@
   padding: .14em;
   font-family: Montserrat, sans-serif;
   text-rendering: optimizeLegibility;
-  margin: 1.5em 0 0.3rem 0;
+  margin: 1em 0 0.3rem 0;
 }
 
 .install {
@@ -44,6 +44,7 @@ pre.bookmarklet {
 
 .header img {
   margin-bottom: 1.6em;
+  height: 120px;
 }
 
 .faq {
@@ -55,7 +56,16 @@ pre.bookmarklet {
 }
 
 @media (min-width: 32rem) {
+  .big-link {
+    font-size: 3em;
+  }
+
+  .medium-link {
+    margin-bottom: 1.5em;
+  }
+
   .header img {
-      margin-bottom: 2em
+    margin-bottom: 2em;
+    height: 180px;
   }
 }

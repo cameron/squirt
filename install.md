@@ -65,7 +65,7 @@ So read. Very speed. Wow.
 
 **A)** [Github issues](https://github.com/cameron/squirt/issues) is the best,
 but emails to [squirt.io.reader@gmail.com](mailto:squirt.io.reader@gmail.com)
-and tweets [@squirtio](http//www.twitter.com/squirtio) work, too.
+and tweets [@squirtio](http://www.twitter.com/squirtio) work, too.
 
 </div>
 

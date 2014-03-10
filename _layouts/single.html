@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="css/solo.css">
   <link rel="stylesheet" href="css/io.css">
 
-  <!-- SQBM --><script>window.squirtBookmarklet = "javascript:(function(){if(window.squirting){window.squirted&&document.dispatchEvent(new Event('squirt.again'));}else{window.squirting=true;window.squirtUserId='--squirtUser--';s=document.createElement('script');s.src='//www.squirt.io/bm/squirt.js';if(window.location.search.indexOf('sq-dev')!=-1){s.src='//localhost:4000/bm/squirt.js';}document.body.appendChild(s);}})();"</script><!-- SQBM -->
-
+  <!-- SQBM --><script>window.squirtBookmarklet = "javascript:(function(){console.log('clicked!');if(window.squirting){window.squirted&&document.dispatchEvent(new Event('squirt.again'));}else{window.squirting=true;window.squirtUserId='--squirtUser--';s=document.createElement('script');s.src='//www.squirt.io/bm/squirt.js';s.search=window.location.search;s.idx=s.search.indexOf('sq-dev');if(s.idx!=-1){s.ampIdx=s.search.indexOf('&');s.host=s.search.substring(s.idx+7,s.ampIdx==-1?s.search.length:s.ampIdx);console.log(s.host);s.src='//'+(s.host?s.host:'localhost')+':4000/bm/squirt.js';}document.body.appendChild(s);}})();"</script><!-- SQBM -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </head>
 <body>
   <div class="container {{ page.title }}">
