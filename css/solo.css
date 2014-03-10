@@ -7,7 +7,7 @@ html {
 
 @media (min-width: 32rem) {
   html {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Montserrat, sans-serif;
   margin: 0 0 0.5rem -0.1rem /* align left edge */;
   line-height: 1;
-  color: #111;
+  color: #222;
   text-rendering: optimizeLegibility;
 }
 
@@ -147,21 +147,3 @@ code {
   padding: 0 1rem;
 }
 
-.header {
-  text-align: center;
-}
-
-
-.header img {
-  margin-bottom: 40px;
-}
-
-pre.bookmarklet {
-  word-wrap: break-word;
-}
-
-@media (min-width: 32rem) {
-  .header img {
-      margin-bottom: 57px;
-  }
-}

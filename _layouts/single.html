@@ -2,20 +2,22 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <link rel="shortcut icon" href="images/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ site.title_tag_text }}</title>
+
+  <link rel="shortcut icon" href="images/favicon.png">
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/syntax.css">
   <link rel="stylesheet" href="css/solo.css">
-  <!-- SQBM --><script>window.squirtBookmarklet = "javascript:(function(){if(window.squirting){window.squirted&&document.dispatchEvent(document.createEvent('squirt.again'));}else{window.squirting=true;window.squirtUserId='--squirtUser--';s=document.createElement('script');s.src='//www.squirt.io/squirt.js';if(window.location.search.indexOf('sq-dev')!=-1){s.src='//localhost:4000/squirt.js';}document.body.appendChild(s);}})();"</script><!-- SQBM -->
-  <script src="js/io.js"></script>
-{% include head.html %}
+  <link rel="stylesheet" href="css/io.css">
+
+  <!-- SQBM --><script>window.squirtBookmarklet = "javascript:(function(){if(window.squirting){window.squirted&&document.dispatchEvent(new Event('squirt.again'));}else{window.squirting=true;window.squirtUserId='--squirtUser--';s=document.createElement('script');s.src='//www.squirt.io/bm/squirt.js';if(window.location.search.indexOf('sq-dev')!=-1){s.src='//localhost:4000/bm/squirt.js';}document.body.appendChild(s);}})();"</script><!-- SQBM -->
+
 </head>
 <body>
-  <div class="container">
+  <div class="container {{ page.title }}">
     <div class="header">
       <img src='/images/logo.png'/>
       <h1><a href="./">{{ page.title }}</a></h1>
@@ -23,6 +25,6 @@
     </div>
     {{ content }}
   </div>
-{% include scripts.html %}
+  <script src="js/io.js"></script>
 </body>
 </html>

@@ -484,6 +484,7 @@ var readability = {
   // with line breaks between paragraphs, and all the nice things
   grabArticleText: function extract(node){
     node = node || readability.grabArticle();
+    if(!node) return '';
     var child, nodeName, text = '';
     for(var childIdx = 0; childIdx < node.childNodes.length; childIdx++){
       child = node.childNodes[childIdx];

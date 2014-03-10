@@ -1,41 +1,52 @@
 var sq = {};
 sq.version = '0.0.1';
+sq.host =  window.location.search.indexOf('sq-dev') != -1 ?
+  '//localhost:4000/bm/' : '//www.squirt.io/bm/';
+
 (function(Keen){
   Keen.addEvent('load');
   (function makeSquirt(read, makeGUI) {
-    var host = window.location.search.indexOf('sq-dev') != -1 ?
-      '//localhost:4000/' : '//www.squirt.io/';
-
-    var ss = injectStylesheet(host + 'squirt.css')
-    injectStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
 
     on('squirt.again', startSquirt);
-    on(ss, 'load', function(){
+    injectStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+    injectStylesheet(sq.host + 'squirt.css', function stylesLoaded(){
       makeGUI();
       startSquirt();
-    })
+    });
 
     function startSquirt(){
       Keen.addEvent('start');
       showGUI();
+      getText(read);
+    };
+
+    function getText(read){
+      // text source: demo
+      if(window.squirtText) return read(window.squirtText);
+
+      // text source: selection
       var selection = window.getSelection();
       if(selection.type == 'Range') {
-        return read((function getSelectedText(){
-          var container = document.createElement("div");
-          for (var i = 0, len = selection.rangeCount; i < len; ++i) {
-            container.appendChild(selection.getRangeAt(i).cloneContents());
-          }
-          return container.textContent;
-        })());
+        var container = document.createElement("div");
+        for (var i = 0, len = selection.rangeCount; i < len; ++i) {
+          container.appendChild(selection.getRangeAt(i).cloneContents());
+        }
+        return read(container.textContent);
       }
-      function readabilize(){ read(readability.grabArticleText()); }
-      if(!window.readability){
-        var script = makeEl('script', {
-          src: host + 'readability.js'
-        }, document.head);
-        return on('readability.ready', readabilize);
-      }
-      readabilize();
+
+      // text source: readability
+      var handler;
+      function readabilityReady(){
+        handler && document.removeEventListener('readility.ready', handler);
+        read(readability.grabArticleText());
+      };
+
+      if(window.readability) return readabilityReady();
+
+      makeEl('script', {
+        src: sq.host + 'readability.js'
+      }, document.head);
+      handler = on('readability.ready', readabilityReady);
     };
   })(makeRead(makeTextToNodes(wordToNode)), makeGUI);
 
@@ -70,7 +81,7 @@ sq.version = '0.0.1';
       });
 
       on('squirt.wpm', function(e){
-        sq.wpm = e.value
+        sq.wpm = Number(e.value);
         wpm(e.value);
         dispatch('squirt.wpm.after');
         e.notForKeen == undefined && Keen.addEvent('wpm', {'wpm': sq.wpm});
@@ -127,6 +138,7 @@ sq.version = '0.0.1';
 
       lastNode = nodes[nextIdx];
       wordContainer.appendChild(lastNode);
+      lastNode.instructions && lastNode.instructions.map(function(f){ f(); });
       timeoutId = setTimeout(nextNode, intervalMs * getDelay(lastNode, jumped));
     };
 
@@ -151,6 +163,11 @@ sq.version = '0.0.1';
       });
       prerenderer = prerenderer ? prerenderer
                   : makeDiv({'class': 'sq-word-prerenderer'}, wordContainer);
+      if(!text){
+        Keen.addEvent('readability-fail');
+        var modal = document.querySelector('.sq-modal');
+        modal.innerHTML = '<div class="error">Oops! This page is too hard for Squirt to read. We\'ve been notified, and will do our best to resolve the issue shortly.</div>';
+      }
       nodes = textToNodes(text);
       nodeIdx = 0;
 
@@ -173,6 +190,25 @@ sq.version = '0.0.1';
     var node = makeDiv({'class': 'sq-word'});
     var span;
 
+    // parse #SQ..SQ# instructions for this word
+    var instructionsRE = /#SQ(.*)SQ#/;
+    var match = word.match(instructionsRE);
+    if(match && match.length > 1){
+      node.instructions = [];
+      match[1].split(';')
+      .filter(function(w){ return w.length; })
+      .map(function(instruction){
+        var val = Number(instruction.split('=')[1]);
+        node.instructions.push(function(){
+          dispatch('squirt.wpm', {value: val, notForKeen: true})
+        });
+      });
+      word = word.replace(instructionsRE, '');
+    };
+
+    var length = word.length;
+    var lastChar = word[word.length - 1];
+    if('.?!:;"'.indexOf(lastChar)) length -= 1;
     var centerOnCharIdx =
       word.length == 1 ? 0 :
       (word.length == 2 ? 1 :
@@ -227,6 +263,10 @@ sq.version = '0.0.1';
       window.squirted = true;
       dispatch('squirt.close');
       Keen.addEvent('close');
+    });
+
+    on(window, 'orientationchange', function(){
+      Keen.addEvent('orientation-change', {'orientation': window.orientation});
     });
 
     var modal = makeDiv({'class': 'sq-modal'}, squirt);
@@ -353,12 +393,17 @@ sq.version = '0.0.1';
     return makeEl('div', attrs, parent);
   };
 
-  function injectStylesheet(url){
-    return makeEl('link', {
+  function injectStylesheet(url, onLoad){
+    var el = makeEl('link', {
       rel: 'stylesheet',
       href: url,
       type: 'text/css'
     }, document.head);
+    function loadHandler(){
+      onLoad();
+      el.removeEventListener('load', loadHandler)
+    };
+    onLoad && on(el, 'load', loadHandler);
   };
 
   function on(bus, evts, cb){

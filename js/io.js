@@ -8,15 +8,40 @@
       userId);
 
     document.addEventListener('DOMContentLoaded', function injectBookmarklet(){
-      (["a.bookmarklet","pre.bookmarklet"]).map(function(query){
+      (["a.bookmarklet","pre.bookmarklet", "h3.bookmarklet"]).map(function(query){
         var el = document.querySelector(query);
         if(!el) return;
-        if(query.indexOf('a.') != -1)
+        switch(query.replace('.bookmarklet','')){
+          case 'a':
           el.setAttribute('href', userBookmarklet);
-        else
+          break;
+
+          case 'pre':
           el.textContent = userBookmarklet;
+          break;
+
+          case 'h3':
+          el.setAttribute('onclick', userBookmarklet);
+          break;
+        }
       });
     });
+
+    
+    window.squirtText = "#SQ;wpm=200;SQ#Squirt displays one word at a time, positioning " +
+      "them so that your eye can read them without moving.\n " +
+      "Right now, you're reading at 200 words per minute. Let's go a little faster, " +
+      "shall we?\n " +
+      "#SQ;wpm=300;SQ#This is 300 words per minute. Average reading speed is between " +
+      "120 and 200 " +
+      "words per minute. " +
+      "With Squirt, most people can read twice as fast without " +
+      "training. Let's see how fast you can go!\n " +
+      "#SQ;wpm=400;SQ#400 WPM!\n The buttons on the right let you control Squirt: " +
+      "You can pause, rewind by 10 seconds, and set the rate at which words " +
+      "are displayed.\n Close Squirt by tapping on the page " +
+      "behind it. To install Squirt, follow the install link on the home page, " +
+      "or wait for this sentence to finish...\n";
 
   })((function injectKeen(){
     window.Keen=window.Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.0-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
