@@ -163,7 +163,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       var lastChar = word[word.length - 1];
       if(lastChar == '\n') return waitAfterParagraph;
       if('.!?'.indexOf(lastChar) != -1) return waitAfterPeriod;
-      if(',;:'.indexOf(lastChar) != -1) return waitAfterComma;
+      if(',;:–'.indexOf(lastChar) != -1) return waitAfterComma;
       if(word.length < 4) return waitAfterShortWord;
       return 1;
     };
