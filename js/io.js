@@ -13,7 +13,7 @@
         if(!el) return;
         switch(query.replace('.bookmarklet','')){
           case 'a':
-          el.setAttribute('onclick', userBookmarklet);
+          el.setAttribute('href', userBookmarklet);
           break;
 
           case 'pre':
