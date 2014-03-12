@@ -1,6 +1,6 @@
 (function(){
   if(window.sq){
-    window.sq.closed && document.dispatchEvent(new Event('squirt.again'));
+     window.sq.closed && window.document.dispatchEvent(new Event('squirt.again'));
   } else {
     window.sq = {};
     window.sq.userId = '--squirtUser--';
