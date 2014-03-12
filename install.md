@@ -3,7 +3,7 @@ layout: single
 title: Install Squirt
 ---
 
-Squirt is a bookmarklet: <a class="bookmarklet">Squirt</a>.
+Installing the <a class="bookmarklet">Squirt</a> bookmarklet will let you speed read any article on the web.
 
 ## Don't know what a bookmarklet is?
 This 30-second [video tutorial](https://www.youtube.com/watch?v=XZj25ujuOGk&feature=youtu.be) will have you speed reading in, well, about 30 seconds.
