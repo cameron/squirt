@@ -163,7 +163,11 @@ sq.host =  window.location.search.match('sq-dev') ?
     function getDelay(node, jumped){
       var word = node.word;
       if(jumped) return waitAfterPeriod;
+      if(word == "Mr." ||
+          word == "Mrs." ||
+          word == "Ms.") return 1;
       var lastChar = word[word.length - 1];
+      if(lastChar.match('”|"')) lastChar = word[word.length - 2];
       if(lastChar == '\n') return waitAfterParagraph;
       if('.!?'.indexOf(lastChar) != -1) return waitAfterPeriod;
       if(',;:–'.indexOf(lastChar) != -1) return waitAfterComma;
