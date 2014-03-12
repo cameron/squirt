@@ -177,7 +177,7 @@ sq.host =  window.location.search.match('sq-dev') ?
 
     function showTweetButton(words, minutes){
       var html = "<div>You just read " + words + " words in " + minutes + " minutes!</div>";
-      var tweetString = "I read " + words + " words in " + minutes + " minutes without breaking a sweat&mdash;www.squirt.io turns your browser/phone into a speed reading machine!";
+      var tweetString = "I read " + words + " words in " + minutes + " minutes without breaking a sweat&mdash;www.squirt.io turns your browser into a speed reading machine!";
       var paramStr = encodeURI("url=squirt.io&user=squirtio&size=large&text=" +
           tweetString);
       html += '<iframe class=\"tweet-button\" '
