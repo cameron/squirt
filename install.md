@@ -3,7 +3,7 @@ layout: single
 title: Install Squirt
 ---
 
-Installing the <a class="bookmarklet">Squirt</a> bookmarklet will let you speed read any article on the web.
+Add this <a class="bookmarklet">Squirt</a> bookmarklet to your bookmarks bar, visit any article you'd like to read, and click the bookmarklet.
 
 ## Don't know what a bookmarklet is?
 This 30-second [video tutorial](https://www.youtube.com/watch?v=XZj25ujuOGk&feature=youtu.be) will have you speed reading in, well, about 30 seconds.
