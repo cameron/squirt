@@ -1,3 +1,16 @@
+.sq * {
+  vertical-align: baseline;
+  font-weight: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  border: 0 none;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+}
+
 .sq-blur {
   filter: blur(4px);
   -webkit-filter: blur(4px);
@@ -16,7 +29,7 @@
   z-index: 9999999999999999999999;
 }
 
-.sq-modal {
+.sq .modal {
   position: fixed;
   left: 0;
   top: 30%;
@@ -26,37 +39,40 @@
   font-size: 48px;
   background-color: #F6F6F6;
   color: #333;
+  font-family: Georgia, serif;
 
   box-shadow: 0 2px 10px rgba(0,0,0,.4);
   z-index: 99999999999999999999999;
-  font-family: Georgia, serif;
+
+  cursor: none;
 }
 
-.sq-modal .error {
+.sq .modal .error {
   margin: 2em;
   font-size: .8em;
 }
 
-.sq-final-word {
+.sq .final-word {
   display: none;
   margin: 15%;
   text-align: center;
   width: 50%;
+  font-size: .8em !important;
 }
 
-.sq-reader {
+.sq .reader {
   position: absolute;
   height: 100%;
   left: 34%;
   border-left: 1px solid rgba(0,0,0, .4);
 }
 
-.sq-word-container {
+.sq .word-container {
   position: absolute;
   top: 30%;
 }
 
-.sq-focus-indicator-gap {
+.sq .focus-indicator-gap {
   position: absolute;
   height: 111px;
   background-color: #f6f6f6;
@@ -64,7 +80,7 @@
   left: -2px;
 }
 
-.sq-controls {
+.sq .controls {
   font-family: "Helvetica Neue", "Arial", sans-serif;
   font-size: 40%;
   text-align: center;
@@ -78,11 +94,11 @@
   z-index: 1;
 }
 
-.sq-controls a, .sq-wpm-selector a{
+.sq .controls a, .sq .wpm-selector a{
   pointer-events: none;
 }
 
-.sq-control {
+.sq .control {
   cursor: pointer;
   margin: 0;
   background-color: rgba(255, 255, 255, .68);
@@ -91,22 +107,22 @@
   margin-bottom: 3px;
 }
 
-.sq-control:hover {
+.sq .control:hover {
   background-color: rgba(255, 255, 255, .9);
 }
 
-.sq-control:active {
+.sq .control:active {
   background-color: rgba(230, 230, 255, 1);
 }
 
-.sq-controls a, select{
+.sq .controls a, select{
   text-decoration: none;
   color: inherit;
   display:block;
   cursor: pointer;
 }
 
-.sq-wpm-selector {
+.sq .wpm-selector {
   height: 100%;
   position: absolute;
   top:0;
@@ -114,7 +130,7 @@
   width: 401%;
 }
 
-.sq-wpm-option {
+.sq .wpm-option {
   margin: 0 3px 3px 0;
   width: 32.75%; 
   height: 80px;
@@ -124,35 +140,35 @@
   cursor: pointer;
 }
 
-.sq-wpm-plus-50 {
+.sq .wpm-plus-50 {
   color: rgba(0, 155, 216, 0.39);
 }
 
-.sq-wpm-option:hover, .sq-wpm-option:active {
+.sq .wpm-option:hover, .sq .wpm-option:active {
   background-color: #EFEFEF;
 }
 
-.sq-wpm-option a {
+.sq .wpm-option a {
   pointer-events: none;
   font-size: 1.4em;
 }
 
-.sq-control.sq-wpm div{
+.sq .control.wpm div{
   font-size: .8em;
 }
 
-.sq-orp{
+.sq .orp{
   color: rgb(238, 69, 69);
 }
 
-.sq-word{
+.sq .word{
   top: 34%;
   position: absolute;
   font-size: 1.2em;
   padding: 15px;
 }
 
-.sq-word-prerenderer {
+.sq .word-prerenderer {
   visibility: hidden;
 }
 
@@ -162,38 +178,38 @@
 and (min-device-width : 320px) 
 and (max-device-width : 568px) 
 and (orientation: landscape){
- .sq-modal {
+ .sq .modal {
    width: 100%;
    height: 204px;
    top: 20%;
  } 
 
- .sq-focus-indicator-gap {
+ .sq .focus-indicator-gap {
    height: 66px;
  }
 
- .sq-control {
+ .sq .control {
    height: 32.3%;
    padding-top: 0;
    margin-bottom: 2.1%;
    font-size: .9em;
  }
 
- .sq-control a {
+ .sq .control a {
    padding-top: 20%;
  }
 
- .sq-wpm-option {
+ .sq .wpm-option {
    height: 32.3%;
    margin: 0 0.5% 0.5% 0;
    padding-top: 0;
  }
 
- .sq-wpm-option a {
+ .sq .wpm-option a {
    padding-top: 13%;
  }
 
- .sq-word {
+ .sq .word {
    font-size: .6em;
  }
 }
@@ -202,50 +218,51 @@ and (orientation: landscape){
 and (min-device-width : 320px) 
 and (max-device-width : 568px) 
 and (orientation: portrait){
- .sq-modal {
+ .sq .modal {
    height: 404px;
    top: 20%;
  } 
 
- .sq-reader {
+ .sq .reader {
    height: 44%;
    left: 45%;
  }
 
- .sq-focus-indicator-gap {
+ .sq .focus-indicator-gap {
    height: 74px;
  }
 
- .sq-wpm-selector {
+ .sq .wpm-selector {
    left: 0;
    top:-44%;
    width: 100%;
    background-color: #f6f6f6;
  }
 
- .sq-controls {
+ .sq .controls {
    top: 44%;
    width: 100%;
    left: 0;
  }
 
- .sq-control {
+ .sq .control {
    height: 46px;
    padding-top:27px;
    font-size: .9em;
  }
 
- .sq-wpm-option:nth-child(3n){
+ .sq .wpm-option:nth-child(3n){
    margin-right:0;        
  }
 
- .sq-wpm-option {
+ .sq .wpm-option {
    height: 82px;
    padding-top: 50px;
    width: 32.67%;
  }
 
- .sq-word {
+ .sq .word {
    font-size: .6em;
  }
 }
+

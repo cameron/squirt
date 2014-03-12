@@ -2,14 +2,17 @@ var sq = window.sq;
 sq.version = '0.0.1';
 sq.host =  window.location.search.match('sq-dev') ?
   document.scripts[document.scripts.length - 1].src.match(/\/\/.*\//)[0]
-        : '//www.squirt.io/bm/';
+        : '//www.squirt.io/bm';
 
 (function(Keen){
   Keen.addEvent('load');
+  on('mousemove', function(){
+    document.querySelector('.sq .modal').style.cursor = 'auto';
+  });
   (function makeSquirt(read, makeGUI) {
 
     on('squirt.again', startSquirt);
-    injectStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+    injectStylesheet(sq.host + 'font-awesome.css');
     injectStylesheet(sq.host + 'squirt.css', function stylesLoaded(){
       makeGUI();
       startSquirt();
@@ -128,8 +131,8 @@ sq.host =  window.location.search.match('sq-dev') ?
 
     function finalWord(){
       Keen.addEvent('final-word');
-      toggle(document.querySelector('.sq-reader'));
-      if(window.location.hostname.match('squirt.io')){
+      toggle(document.querySelector('.sq .reader'));
+      if(window.location.hostname.match('squirt.io|localhost')){
         window.location.href = '/install.html';
       } else {
         showTweetButton(nodes.length,
@@ -169,7 +172,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     };
 
     function showTweetButton(words, minutes){
-      var html = "<h2>You just read " + words + " words in " + minutes + " minutes!</h2>";
+      var html = "<div>You just read " + words + " words in " + minutes + " minutes!</div>";
       var tweetString = "I read " + words + " words in " + minutes + " minutes without breaking a sweat&mdash;www.squirt.io turns your browser/phone into a speed reading machine!";
       var paramStr = encodeURI("url=squirt.io&user=squirtio&size=large&text=" +
           tweetString);
@@ -188,7 +191,7 @@ sq.host =  window.location.search.match('sq-dev') ?
 
     function readabilityFail(){
         Keen.addEvent('readability-fail');
-        var modal = document.querySelector('.sq-modal');
+        var modal = document.querySelector('.sq .modal');
         modal.innerHTML = '<div class="error">Oops! This page is too hard for Squirt to read. We\'ve been notified, and will do our best to resolve the issue shortly.</div>';
     };
 
@@ -198,12 +201,12 @@ sq.host =  window.location.search.match('sq-dev') ?
         prerenderer,
         finalWordContainer;
     function initDomRefs(){
-      wordContainer = document.querySelector('.sq-word-container');
-      invoke(wordContainer.querySelectorAll('.sq-word'), 'remove');
-      prerenderer = document.querySelector('.sq-word-prerenderer');
-      finalWordContainer = document.querySelector('.sq-final-word');
-      document.querySelector('.sq-reader').style.display = 'block';
-      document.querySelector('.sq-final-word').style.display = 'none';
+      wordContainer = document.querySelector('.sq .word-container');
+      invoke(wordContainer.querySelectorAll('.sq .word'), 'remove');
+      prerenderer = document.querySelector('.sq .word-prerenderer');
+      finalWordContainer = document.querySelector('.sq .final-word');
+      document.querySelector('.sq .reader').style.display = 'block';
+      document.querySelector('.sq .final-word').style.display = 'none';
     };
 
     return function read(text) {
@@ -220,7 +223,7 @@ sq.host =  window.location.search.match('sq-dev') ?
 
   function makeTextToNodes(wordToNode) {
     return function textToNodes(text) {
-      text = "3\n 2\n 1\n " + text.trim('\n');
+      text = "3\n 2\n 1\n " + text.trim('\n').replace(/\s+\n/g,'\n');
       return text
              .split(' ')
              .filter(function(word){ return word.length; })
@@ -246,6 +249,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     return word;
   };
 
+  // ORP: Optimal Recgonition Point
   function getORPIndex(word){
     var length = word.length;
     var lastChar = word[word.length - 1];
@@ -253,7 +257,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       lastChar = word[word.length - 2];
       length--;
     }
-    if('.?!:;"'.indexOf(lastChar) != -1) length--;
+    if(',.?!:;"'.indexOf(lastChar) != -1) length--;
     return length == 1 ? 0 :
       (length == 2 ? 1 :
           (length == 3 ? 1 :
@@ -261,7 +265,7 @@ sq.host =  window.location.search.match('sq-dev') ?
   };
 
   function wordToNode(word) {
-    var node = makeDiv({'class': 'sq-word'});
+    var node = makeDiv({'class': 'word'});
     node.word = parseSQInstructionsForWord(word, node);
 
     var orpIdx = getORPIndex(node.word);
@@ -269,7 +273,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     node.word.split('').map(function charToNode(char, idx) {
       var span = makeEl('span', {}, node);
       span.textContent = char;
-      if(idx == orpIdx) span.classList.add('sq-orp');
+      if(idx == orpIdx) span.classList.add('orp');
     });
 
     node.center = (function(orpNode) {
@@ -282,17 +286,17 @@ sq.host =  window.location.search.match('sq-dev') ?
 
   function showGUI(){
     blur();
-    document.getElementById('squirt').style.display = 'block';
+    document.querySelector('.sq').style.display = 'block';
   };
 
   function hideGUI(){
     unblur();
-    document.getElementById('squirt').style.display = 'none';
+    document.querySelector('.sq').style.display = 'none';
   };
 
   function blur(){
     map(document.body.children, function(node){
-      if(node.id != 'squirt')
+      if(!node.classList.contains('sq'))
         node.classList.add('sq-blur');
     });
   };
@@ -304,7 +308,7 @@ sq.host =  window.location.search.match('sq-dev') ?
   }
 
   function makeGUI(){
-    var squirt = makeDiv({id: 'squirt'}, document.body);
+    var squirt = makeDiv({class: 'sq'}, document.body);
     squirt.style.display = 'none';
     on('squirt.close', hideGUI);
     var obscure = makeDiv({class: 'sq-obscure'}, squirt);
@@ -318,14 +322,14 @@ sq.host =  window.location.search.match('sq-dev') ?
       Keen.addEvent('orientation-change', {'orientation': window.orientation});
     });
 
-    var modal = makeDiv({'class': 'sq-modal'}, squirt);
+    var modal = makeDiv({'class': 'sq modal'}, squirt);
 
-    var controls = makeDiv({'class':'sq-controls'}, modal);
-    var reader = makeDiv({'class': 'sq-reader'}, modal);
-    var wordContainer = makeDiv({'class': 'sq-word-container'}, reader);
-    makeDiv({'class': 'sq-focus-indicator-gap'}, wordContainer);
-    makeDiv({'class': 'sq-word-prerenderer'}, wordContainer);
-    makeDiv({'class': 'sq-final-word'}, modal);
+    var controls = makeDiv({'class':'sq controls'}, modal);
+    var reader = makeDiv({'class': 'sq reader'}, modal);
+    var wordContainer = makeDiv({'class': 'sq word-container'}, reader);
+    makeDiv({'class': 'sq focus-indicator-gap'}, wordContainer);
+    makeDiv({'class': 'sq word-prerenderer'}, wordContainer);
+    makeDiv({'class': 'sq final-word'}, modal);
 
 
     (function make(controls){
@@ -334,7 +338,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       (function makeWPMSelect(){
 
         // create the ever-present left-hand side button
-        var control = makeDiv({'class': 'sq-wpm sq-control'}, controls);
+        var control = makeDiv({'class': 'sq wpm sq control'}, controls);
         var wpmLink = makeEl('a', {}, control);
         bind("{{wpm}} WPM", sq, wpmLink);
         on('squirt.wpm.after', wpmLink.render);
@@ -345,12 +349,12 @@ sq.host =  window.location.search.match('sq-dev') ?
         });
 
         // create the custom selector
-        var wpmSelector = makeDiv({'class': 'sq-wpm-selector'}, controls);
+        var wpmSelector = makeDiv({'class': 'sq wpm-selector'}, controls);
         wpmSelector.style.display = 'none';
         var plus50OptData = {add: 50, sign: "+"};
         var datas = [];
         for(var wpm = 200; wpm < 1000; wpm += 100){
-          var opt = makeDiv({'class': 'sq-wpm-option'}, wpmSelector);
+          var opt = makeDiv({'class': 'sq wpm-option'}, wpmSelector);
           var a = makeEl('a', {}, opt);
           a.data = { baseWPM: wpm };
           a.data.__proto__ = plus50OptData;
@@ -364,7 +368,7 @@ sq.host =  window.location.search.match('sq-dev') ?
         };
 
         // create the last option for the custom selector
-        var plus50Opt = makeDiv({'class': 'sq-wpm-option sq-wpm-plus-50'}, wpmSelector);
+        var plus50Opt = makeDiv({'class': 'sq wpm-option sq wpm-plus-50'}, wpmSelector);
         var a = makeEl('a', {}, plus50Opt);
         bind("{{sign}}50", plus50OptData, a);
         on(plus50Opt, 'click', function(){
@@ -380,7 +384,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       })();
 
       (function makeRewind(){
-        var container = makeEl('div', {'class': 'sq-rewind sq-control'}, controls);
+        var container = makeEl('div', {'class': 'sq rewind sq control'}, controls);
         var a = makeEl('a', {}, container);
         a.href = '#';
         on(container, 'click', function(e){
@@ -391,7 +395,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       })();
 
       (function makePause(){
-        var container = makeEl('div', {'class': 'sq-pause sq-control'}, controls);
+        var container = makeEl('div', {'class': 'sq pause control'}, controls);
         var a = makeEl('a', {'href': '#'}, container);
         var pauseIcon = "<i class='fa fa-pause'></i>";
         var playIcon = "<i class='fa fa-play'></i>";
@@ -429,7 +433,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       objsAreFuncs = true;
     };
     return map(objs, function(o){
-      return objsAreFuncs ? o.apply(null, args) : o[funcName].apply(null, args);
+      return objsAreFuncs ? o.apply(null, args) : o[funcName].apply(o, args);
     });
   }
 

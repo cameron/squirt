@@ -488,16 +488,15 @@ var readability = {
     var child, nodeName, text = '';
     for(var childIdx = 0; childIdx < node.childNodes.length; childIdx++){
       child = node.childNodes[childIdx];
-      if(child.nodeName == undefined) debugger;
       nodeName = child.nodeName.toLowerCase();
       if(nodeName == "#text"){
-        text += child.nodeValue
+        text += child.nodeValue.trim('\n');
       } else {
         text += extract(child);
       }
     };
     nodeName = node.nodeName.toLowerCase();
-    if('pdiv'.indexOf(nodeName) != -1){
+    if(nodeName.match(/p|div|blockquote|h[1-6]|li/)){
       if(text[text.length - 1] != '\n') text += '\n'
       text += ' ';
     }

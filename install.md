@@ -3,50 +3,20 @@ layout: single
 title: Install Squirt
 ---
 
----
+Squirt is a bookmarklet: <a class="bookmarklet">Squirt</a>.
 
-## On your computer
+## Don't know what a bookmarklet is?
+This 30-second [video tutorial](https://www.youtube.com/watch?v=XZj25ujuOGk&feature=youtu.be) will have you speed reading in, well, about 30 seconds.
 
-Click and drag the link below to your browser's bookmark bar:
+## Don't like videos?
 
-<a class="big-link bookmarklet" href="">Squirt</a>
+1. Enable your bookmarks bar: [Chrome](/images/chrome-bm-bar.png),
+[Firefox](/images/ff-bm-bar.png), [Safari](/images/safari-bm-bar.png)
+1. Drag the link to your bookmarks bar, just below the URL bar: <a class="big-link bookmarklet" href="">Squirt</a>
 
-Then, visit an [article](http://zenhabits.net/), click the bookmarklet, and read speedily.
+3. Visit an [article](http://zenhabits.net/), click the bookmarklet, and read speedily.
 
----
 
-## On your phone
-
-*Instructions are for iOS Chrome and Safari, but should be sufficient for the enterprising Android user.*
-
-- Open this page on your phone
-- Select and copy the JavaScript below to your clipboard:
-
-<pre class="bookmarklet"></pre>
-
-- Bookmark the current page
-- Open your bookmarks manager
-  - **Chrome**: menu icon, right of the URL bar
-  - **Safari**: book icon, bottom toolbar
-- Edit the newly added bookmark
-  - **Chrome**: top right (pencil icon)
-  - **Safari**: bottom left ("Edit")
-- Change the name to "Squirt"
-- Clear the URL, paste the copied JavaScript, and save
-
-### Bookmarklet installed! Time to read
-
-- Visit [an article](http://zenhabits.net/) you want to read
-- Run the bookmarklet
-  - **Chrome**
-    * Tap the URL bar
-    * Type "Squirt", overwriting the current URL
-    * Tap "Squirt" in the autocomplete list
-  - **Safari**
-    - Tap the URL bar
-    - Tap the Squirt bookmarklet in the grid of icons
-
-So read. Very speed. Wow.
 
 ---
 
@@ -63,9 +33,18 @@ So read. Very speed. Wow.
 
 **Q)** Where do I submit bug reports and feedback?
 
-**A)** [Github issues](https://github.com/cameron/squirt/issues) is the best,
+**A)** [Github issues][gh-issues] is the best,
 but emails to [squirt.io.reader@gmail.com](mailto:squirt.io.reader@gmail.com)
 and tweets [@squirtio](http://www.twitter.com/squirtio) work, too.
+
+</div>
+<div class="faq" markdown="1">
+
+**Q)** I'm a publisher&mdash;can I embed Squirt on my site?
+
+**A)** Absolutely! The bookmarklet will work as a normal &#60;a&#62; tag&mdash;
+you can copy <a class="bookmarklet">this one</a>. Feature requests on [Github][gh-issues]
+will encourage me to clean up the code and make it easy to customize.
 
 </div>
 
@@ -91,3 +70,7 @@ and tweets [@squirtio](http://www.twitter.com/squirtio) work, too.
 [Michael McKellar](https://www.behance.net/michaelmckellar) for a brilliant logo concept.
 
 [Shu Uesugi](http://chibicode.com/) for his Jekyll theme, [Solo](http://chibicode.github.io/solo).
+
+---
+
+[gh-issues]: https://github.com/cameron/squirt/issues

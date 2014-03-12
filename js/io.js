@@ -9,39 +9,39 @@
 
     document.addEventListener('DOMContentLoaded', function injectBookmarklet(){
       (["a.bookmarklet","pre.bookmarklet", "h3.bookmarklet"]).map(function(query){
-        var el = document.querySelector(query);
-        if(!el) return;
-        switch(query.replace('.bookmarklet','')){
-          case 'a':
-          el.setAttribute('href', userBookmarklet);
-          break;
+        var els = document.querySelectorAll(query);
+        for(var el, elIdx = 0; elIdx < els.length; elIdx++){
+          el = els[elIdx];
+          switch(query.replace('.bookmarklet','')){
+            case 'a':
+            el.setAttribute('href', userBookmarklet);
+            break;
 
-          case 'pre':
-          el.textContent = userBookmarklet;
-          break;
+            case 'pre':
+            el.textContent = userBookmarklet;
+            break;
 
-          case 'h3':
-          el.setAttribute('onclick', userBookmarklet);
-          break;
+            case 'h3':
+            el.setAttribute('onclick', userBookmarklet);
+            break;
+          }
         }
       });
     });
 
 
-    window.squirtText = "#SQ;wpm=200;SQ#Squirt displays one word at a time, positioning " +
-      "them so that your eye can read them without moving. " +
-      "Right now, you're reading at 200 words per minute. Let's go a little faster, " +
+    window.squirtText = "#SQ;wpm=250;SQ#Squirt displays one word after another " +
+      "so that your eye can read without moving. " +
+      "Let's go a little faster, " +
       "shall we? " +
-      "#SQ;wpm=300;SQ#This is 300 words per minute. Average reading speed is between " +
-      "120 and 200 " +
-      "words per minute. " +
-      "With Squirt, most people can read twice as fast without " +
+      "#SQ;wpm=350;SQ#This is 350 words per minute. Average readers read between " +
+      "120 and 200 words per minute. " +
+      "Using Squirt, most people can read twice as fast without " +
       "training. Let's see how fast you can go!\n " +
-      "#SQ;wpm=400;SQ#Now, we're skimming along at 400 words per minute!\n The buttons let you control Squirt. " +
-      "You can pause, rewind by 10 seconds, and set the rate at which words " +
-      "are displayed.\n Close Squirt by tapping on the page " +
-      "behind it. To install Squirt, follow the install link on the home page, " +
-      "or wait for this sentence to finish...\n";
+      "#SQ;wpm=450;SQ#Now, you're doing 450 words per minute!\n " +
+      "Squirt is a bookmarklet, which means you can use it on any website. " +
+      "Ready to install? Here we go!";
+
 
   })((function injectKeen(){
     window.Keen=window.Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.0-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
