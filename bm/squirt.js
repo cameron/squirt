@@ -229,7 +229,8 @@ sq.host =  window.location.search.match('sq-dev') ?
     return function textToNodes(text) {
       text = "3\n 2\n 1\n " + text.trim('\n').replace(/\s+\n/g,'\n');
       return text
-             .split(' ')
+             .replace(/[\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ")
+             .split(/[\s]+/g)
              .filter(function(word){ return word.length; })
              .map(wordToNode);
     };
