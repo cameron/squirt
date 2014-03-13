@@ -30,15 +30,15 @@
     });
 
 
-    window.squirtText = "#SQ;wpm=250;SQ#Squirt displays one word after another " +
+    window.squirtText = "#SQwpm=250SQ#Squirt displays one word after another " +
       "so that your eye can read without moving. " +
       "Let's go a little faster, " +
       "shall we? " +
-      "#SQ;wpm=350;SQ#This is 350 words per minute. Average readers read between " +
+      "#SQwpm=350SQ#This is 350 words per minute. Average readers read between " +
       "120 and 200 words per minute. " +
       "Using Squirt, most people can read twice as fast without " +
       "training. Let's see how fast you can go!\n " +
-      "#SQ;wpm=450;SQ#Now, you're doing 450 words per minute!\n " +
+      "#SQwpm=450SQ#Now, you're doing 450 words per minute!\n " +
       "Squirt is a bookmarklet, which means you can use it on any website. " +
       "Ready to install? Here we go!";
 

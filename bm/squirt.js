@@ -241,7 +241,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     var match = word.match(instructionsRE);
     if(match && match.length > 1){
       node.instructions = [];
-      match[1].split(';')
+      match[1].split('#')
       .filter(function(w){ return w.length; })
       .map(function(instruction){
         var val = Number(instruction.split('=')[1]);
