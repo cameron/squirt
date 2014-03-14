@@ -117,6 +117,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     function play(e){
       sq.paused = false;
       dispatch('squirt.pause.after');
+      toggle(document.querySelector('.sq .wpm-selector'));
       nextNode(e.jumped);
       e.notForKeen === undefined && Keen.addEvent('play');
     };
