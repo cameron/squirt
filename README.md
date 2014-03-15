@@ -1,4 +1,6 @@
-# Update: Squirt is now covered by an Apache license! Apologies to those PRs that got hosed by decoupling squirt.io from the bookmarklet source&mdashresubmit and I'll be happy to engage. 
+### Update: Squirt is now covered by an Apache license! 
+
+Apologies to those PRs that got hosed by decoupling squirt.io from the bookmarklet source&mdashresubmit and I'll be happy to engage. 
 
 # Squirt
 
