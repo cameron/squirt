@@ -264,7 +264,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       length--;
     }
     if(',.?!:;"'.indexOf(lastChar) != -1) length--;
-    return length == 1 ? 0 :
+    return length <= 1 ? 0 :
       (length == 2 ? 1 :
           (length == 3 ? 1 :
               Math.floor(length / 2) - 1));
