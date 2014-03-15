@@ -1,6 +1,0 @@
-#! /bin/bash
-
-set -e
-
-BM=$(cat bm/bookmarklet.js | tr -d '\n ' | sed -e 's/[\/&]/\\&/g' | sed 's/newEvent/new Event/');
-sed -i.bak -e "s/<!-- SQBM -->.*<!-- SQBM -->/<!-- SQBM --><script>window.squirtBookmarklet = \"javascript:$BM\"<\/script><!-- SQBM -->/" _layouts/single.html
