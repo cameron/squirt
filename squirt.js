@@ -168,6 +168,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     var waitAfterComma = 2;
     var waitAfterPeriod = 3;
     var waitAfterParagraph = 3.5;
+    var waitAfterLongWord = 1.5;
     function getDelay(node, jumped){
       var word = node.word;
       if(jumped) return waitAfterPeriod;
@@ -180,6 +181,7 @@ sq.host =  window.location.search.match('sq-dev') ?
       if('.!?'.indexOf(lastChar) != -1) return waitAfterPeriod;
       if(',;:–'.indexOf(lastChar) != -1) return waitAfterComma;
       if(word.length < 4) return waitAfterShortWord;
+      if(word.length > 11) return waitAfterLongWord;
       return 1;
     };
 
