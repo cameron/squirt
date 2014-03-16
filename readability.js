@@ -490,7 +490,7 @@ var readability = {
       child = node.childNodes[childIdx];
       nodeName = child.nodeName.toLowerCase();
       if(nodeName == "#text"){
-        text += child.nodeValue.trim('\n');
+        text += child.nodeValue.replace(/^\n+/, "").replace(/\n+$/, "");
       } else {
         text += extract(child);
       }
