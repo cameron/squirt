@@ -6,9 +6,11 @@ sq.host =  window.location.search.match('sq-dev') ?
 
 (function(Keen){
   Keen.addEvent('load');
+
   on('mousemove', function(){
     document.querySelector('.sq .modal').style.cursor = 'auto';
   });
+
   (function makeSquirt(read, makeGUI) {
 
     on('squirt.again', startSquirt);
@@ -290,14 +292,28 @@ sq.host =  window.location.search.match('sq-dev') ?
     return node;
   };
 
+  var disableKeyboardShortcuts;
   function showGUI(){
     blur();
     document.querySelector('.sq').style.display = 'block';
+    disableKeyboardShortcuts = on('keyup', handleKeypress);
   };
 
   function hideGUI(){
     unblur();
     document.querySelector('.sq').style.display = 'none';
+    disableKeyboardShortcuts && disableKeyboardShortcuts();
+  };
+
+  var keyHandlers = {
+      32: dispatch.bind(null, 'squirt.play.toggle'),
+      27: dispatch.bind(null, 'squirt.close')
+  };
+
+  function handleKeypress(e){
+    var handler = keyHandlers[e.keyCode];
+    handler && handler();
+
   };
 
   function blur(){
@@ -494,9 +510,14 @@ sq.host =  window.location.search.match('sq-dev') ?
       bus = document;
     }
     evts = typeof evts == 'string' ? [evts] : evts;
-    return evts.map(function(evt){
-      return bus.addEventListener(evt, cb);
+    var removers = evts.map(function(evt){
+      bus.addEventListener(evt, cb);
+      return function(){
+        bus.removeEventListener(evt, cb);
+      };
     });
+    if(removers.length == 1) return removers[0];
+    return removers;
   };
 
   function dispatch(evt, attrs, dispatcher){
