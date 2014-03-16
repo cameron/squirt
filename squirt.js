@@ -300,27 +300,15 @@ sq.host =  window.location.search.match('sq-dev') ?
     return node;
   };
 
-  var enableSpacebarScroll;
-  function disableSpacebarScroll(){
-    enableSpacebarScroll = on(window, 'keydown', function(e){
-      if(e.keyCode == 32){
-        e.preventDefault();
-        return false;
-      }
-    });
-  };
-
   var disableKeyboardShortcuts;
   function showGUI(){
     blur();
     document.querySelector('.sq').style.display = 'block';
     disableKeyboardShortcuts = on('keydown', handleKeypress);
-    disableSpacebarScroll();
   };
 
   function hideGUI(){
     unblur();
-    enableSpacebarScroll();
     document.querySelector('.sq').style.display = 'none';
     disableKeyboardShortcuts && disableKeyboardShortcuts();
   };
@@ -329,12 +317,14 @@ sq.host =  window.location.search.match('sq-dev') ?
       32: dispatch.bind(null, 'squirt.play.toggle'),
       27: dispatch.bind(null, 'squirt.close'),
       38: dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}),
-      40: dispatch.bind(null, 'squirt.wpm.adjust', {value: -10})
+      40: dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}),
+      37: dispatch.bind(null, 'squirt.rewind', {seconds: 10})
   };
 
   function handleKeypress(e){
     var handler = keyHandlers[e.keyCode];
-    handler && handler();
+    handler && (handler(), e.preventDefault())
+    return false;
   };
 
   function blur(){
@@ -363,14 +353,16 @@ sq.host =  window.location.search.match('sq-dev') ?
       Keen.addEvent('orientation-change', {'orientation': window.orientation});
     });
 
-    var modal = makeDiv({'class': 'sq modal'}, squirt);
+    var modal = makeDiv({'class': 'modal'}, squirt);
 
-    var controls = makeDiv({'class':'sq controls'}, modal);
-    var reader = makeDiv({'class': 'sq reader'}, modal);
-    var wordContainer = makeDiv({'class': 'sq word-container'}, reader);
-    makeDiv({'class': 'sq focus-indicator-gap'}, wordContainer);
-    makeDiv({'class': 'sq word-prerenderer'}, wordContainer);
-    makeDiv({'class': 'sq final-word'}, modal);
+    var controls = makeDiv({'class':'controls'}, modal);
+    var reader = makeDiv({'class': 'reader'}, modal);
+    var wordContainer = makeDiv({'class': 'word-container'}, reader);
+    makeDiv({'class': 'focus-indicator-gap'}, wordContainer);
+    makeDiv({'class': 'word-prerenderer'}, wordContainer);
+    makeDiv({'class': 'final-word'}, modal);
+    var keyboard = makeDiv({'class': 'keyboard-shortcuts'}, reader);
+    keyboard.innerText = "Keys: Space, Esc, Up, Down";
 
     (function make(controls){
 

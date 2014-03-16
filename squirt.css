@@ -66,6 +66,7 @@
   position: absolute;
   height: 100%;
   left: 34%;
+  width: 46%;
   border-left: 1px solid rgba(0,0,0, .4);
 }
 
@@ -172,7 +173,19 @@
 
 .sq .word-prerenderer {
   visibility: hidden;
+  
 }
+
+.sq .keyboard-shortcuts {
+  color: #999;
+  font-size: .3em;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding-right: .7em;
+  padding-bottom: .7em;
+}
+
 
 /* Mobile */
 
