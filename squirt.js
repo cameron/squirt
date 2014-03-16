@@ -79,6 +79,7 @@ sq.host =  window.location.search.match('sq-dev') ?
 
     (function readerEventHandlers(){
       on('squirt.close', function(){
+        sq.closed = true;
         clearTimeout(nextNodeTimeoutId);
         Keen.addEvent('close');
       });
@@ -299,15 +300,27 @@ sq.host =  window.location.search.match('sq-dev') ?
     return node;
   };
 
+  var enableSpacebarScroll;
+  function disableSpacebarScroll(){
+    enableSpacebarScroll = on(window, 'keydown', function(e){
+      if(e.keyCode == 32){
+        e.preventDefault();
+        return false;
+      }
+    });
+  };
+
   var disableKeyboardShortcuts;
   function showGUI(){
     blur();
     document.querySelector('.sq').style.display = 'block';
-    disableKeyboardShortcuts = on('keyup', handleKeypress);
+    disableKeyboardShortcuts = on('keydown', handleKeypress);
+    disableSpacebarScroll();
   };
 
   function hideGUI(){
     unblur();
+    enableSpacebarScroll();
     document.querySelector('.sq').style.display = 'none';
     disableKeyboardShortcuts && disableKeyboardShortcuts();
   };
@@ -322,7 +335,6 @@ sq.host =  window.location.search.match('sq-dev') ?
   function handleKeypress(e){
     var handler = keyHandlers[e.keyCode];
     handler && handler();
-
   };
 
   function blur(){
@@ -344,9 +356,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     on('squirt.close', hideGUI);
     var obscure = makeDiv({class: 'sq-obscure'}, squirt);
     on(obscure, 'click', function(){
-      sq.closed = true;
       dispatch('squirt.close');
-      Keen.addEvent('close');
     });
 
     on(window, 'orientationchange', function(){
@@ -361,7 +371,6 @@ sq.host =  window.location.search.match('sq-dev') ?
     makeDiv({'class': 'sq focus-indicator-gap'}, wordContainer);
     makeDiv({'class': 'sq word-prerenderer'}, wordContainer);
     makeDiv({'class': 'sq final-word'}, modal);
-
 
     (function make(controls){
 
@@ -511,6 +520,7 @@ sq.host =  window.location.search.match('sq-dev') ?
     };
     onLoad && on(el, 'load', loadHandler);
   };
+
 
   function on(bus, evts, cb){
     if(cb === undefined){
