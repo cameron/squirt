@@ -71,8 +71,9 @@ sq.host =  window.location.search.match('sq-dev') ?
       return ret;
     };
 
-    var intervalMs;
+    var intervalMs, _wpm;
     function wpm(wpm){
+      _wpm = wpm;
       intervalMs = 60 * 1000 / wpm ;
     };
 
@@ -80,6 +81,10 @@ sq.host =  window.location.search.match('sq-dev') ?
       on('squirt.close', function(){
         clearTimeout(nextNodeTimeoutId);
         Keen.addEvent('close');
+      });
+
+      on('squirt.wpm.adjust', function(e){
+        dispatch('squirt.wpm', {value: e.value + _wpm});
       });
 
       on('squirt.wpm', function(e){
@@ -307,7 +312,9 @@ sq.host =  window.location.search.match('sq-dev') ?
 
   var keyHandlers = {
       32: dispatch.bind(null, 'squirt.play.toggle'),
-      27: dispatch.bind(null, 'squirt.close')
+      27: dispatch.bind(null, 'squirt.close'),
+      38: dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}),
+      40: dispatch.bind(null, 'squirt.wpm.adjust', {value: -10})
   };
 
   function handleKeypress(e){
