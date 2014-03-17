@@ -33,6 +33,7 @@
 
 .sq .modal {
   position: fixed;
+  display: block;
   left: 0;
   top: 20%;
   width: 100%;
